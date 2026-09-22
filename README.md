@@ -116,6 +116,13 @@ Firestore) supaya lebih hemat dan cepat.
 3. **Aktifkan Authentication**
    - Firebase Console → Authentication → Sign-in method → aktifkan
      **Email/Password**.
+   - Peserta didik login pakai **username**, bukan email. Di balik layar,
+     setiap username otomatis diubah jadi alamat seperti
+     `budi123@komikstripstudio.app` sebelum dikirim ke Firebase (karena
+     Firebase Authentication Email/Password memang butuh format email).
+     Alamat ini tidak dipakai mengirim email sungguhan — kalau mau
+     mengganti domain palsunya, ubah konstanta `DOMAIN_LOGIN` di
+     `assets/js/auth.js`.
 
 4. **Siapkan Firestore**
    - Firebase Console → Firestore Database → Create database (mode production).
