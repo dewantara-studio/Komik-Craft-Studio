@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Dasbor — Komik Strip Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"><span>K</span></span>
+    <span class="brand-name">Komik Strip Studio</span>
+  </a>
+  <div class="top-actions">
+    <button class="icon-btn" type="button" data-action="logout">Keluar</button>
+  </div>
+</header>
+
+<div class="dash-shell">
+  <nav class="dash-nav" aria-label="Navigasi utama">
+    <ul>
+      <li><a href="dashboard.html" class="active">🏠 Beranda</a></li>
+      <li><a href="#">🎨 Belajar Clip Studio Paint</a></li>
+      <li><a href="#">📚 Belajar Komik</a></li>
+      <li><a href="#">✏️ Latihan</a></li>
+      <li><a href="#">🖌️ Komik Studio</a></li>
+      <li><a href="#">📁 Komik Saya</a></li>
+      <li><a href="#">🏆 Badge</a></li>
+      <li><a href="#">👤 Profil</a></li>
+    </ul>
+    <div class="nav-guru" id="nav-guru" hidden>
+      <a href="#">📊 Dashboard Guru</a>
+    </div>
+  </nav>
+
+  <main class="dash-main">
+    <div id="dash-loading" class="loading-state">Memuat dasbor…</div>
+
+    <div id="dash-content" hidden>
+      <p class="dash-hello" id="dash-hello">SELAMAT DATANG</p>
+      <h1>Lanjutkan belajar</h1>
+
+      <div class="panel" style="max-width:520px;">
+        <h3 style="margin-top:0;">Materi berikutnya: Mengenal Clip Studio Paint</h3>
+        <p style="margin-bottom:6px;">Progres Clip Studio Paint</p>
+        <div class="progress-bar"><span id="dash-progress-bar" style="width:0%"></span></div>
+        <p style="margin:0 0 16px; color:var(--ink-soft); font-weight:600;" id="dash-progress-value">0%</p>
+        <a href="#" class="btn btn-primary" style="width:auto; display:inline-flex; padding:12px 24px;">Lanjutkan →</a>
+      </div>
+
+      <h2 style="margin-top:36px;">Perjalanan belajar</h2>
+      <ul class="journey">
+        <li data-status="done"><span class="dot"></span> 🎨 Clip Studio Paint</li>
+        <li><span class="dot"></span> 📚 Dasar Komik</li>
+        <li><span class="dot"></span> ✏️ Latihan</li>
+        <li><span class="dot"></span> 🖌️ Komik Studio</li>
+        <li><span class="dot"></span> 🏆 Projek Akhir</li>
+        <li><span class="dot"></span> 📁 Portofolio</li>
+      </ul>
+
+      <h2 style="margin-top:36px;">Segera hadir</h2>
+      <div class="grid-cards">
+        <div class="mini-card locked">
+          <span class="tag">Tahap 3</span>
+          <h3 style="margin:0 0 4px;">Materi Clip Studio Paint</h3>
+          <p style="margin:0; font-size:0.9rem;">Kursus bertingkat akan terbuka di tahap berikutnya.</p>
+        </div>
+        <div class="mini-card locked">
+          <span class="tag">Tahap 7</span>
+          <h3 style="margin:0 0 4px;">Belajar Komik</h3>
+          <p style="margin:0; font-size:0.9rem;">Ide cerita, karakter, hingga panel komik.</p>
+        </div>
+        <div class="mini-card locked">
+          <span class="tag">Tahap 8</span>
+          <h3 style="margin:0 0 4px;">Komik Studio</h3>
+          <p style="margin:0; font-size:0.9rem;">Editor sederhana untuk latihan membuat komik.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="assets/js/firebase-config.js"></script>
+<script type="module" src="assets/js/dashboard.js"></script>
+<script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>

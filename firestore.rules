@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// =========================================================
+// KOMIK STRIP STUDIO — Firestore Security Rules (TAHAP 1)
+// =========================================================
+// Koleksi "users/{userId}" menyimpan profil peserta didik/guru.
+// - Setiap pengguna hanya boleh membuat & mengubah dokumen
+//   profilnya sendiri (userId harus sama dengan uid login).
+// - Guru boleh MEMBACA semua profil peserta didik, tapi
+//   tidak boleh mengubahnya.
+// - Field "role" tidak boleh diubah sendiri oleh pengguna
+//   setelah dibuat (mencegah peserta didik menaikkan
+//   dirinya jadi "guru"). Perubahan role hanya lewat
+//   Firebase Console / Admin SDK.
+// =========================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isLoggedIn() && request.auth.uid == userId;
+    }
+
+    function isGuru() {
+      return isLoggedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'guru';
+    }
+
+    match /users/{userId} {
+      allow create: if isOwner(userId)
+                    && request.resource.data.role == 'peserta_didik';
+
+      allow read: if isOwner(userId) || isGuru();
+
+      allow update: if isOwner(userId)
+                    && request.resource.data.role == resource.data.role;
+
+      allow delete: if false;
+    }
+
+    // Tutup semua koleksi lain secara default sampai
+    // ditambahkan aturan spesifik di tahap berikutnya
+    // (materi, latihan, komik, badge, dll).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

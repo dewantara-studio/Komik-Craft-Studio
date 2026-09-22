@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Masuk — Komik Strip Studio</title>
+<meta name="description" content="Belajar Clip Studio Paint. Belajar Komik. Ciptakan Ceritamu." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="halftone-bg">
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-mark"><span>K</span></span>
+    <span class="brand-name">Komik Strip Studio</span>
+  </a>
+</header>
+
+<main class="auth-shell">
+  <div class="auth-panel">
+    <div class="panel">
+      <span class="auth-kicker">Masuk ke studio</span>
+      <h1>Halo lagi!</h1>
+      <p>Lanjutkan belajar Clip Studio Paint dan buat komik strip milikmu.</p>
+
+      <div id="login-alert" class="alert" role="alert"></div>
+
+      <form id="form-login" novalidate>
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Kata sandi</label>
+          <input type="password" id="login-password" name="password" autocomplete="current-password" minlength="6" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Masuk</button>
+      </form>
+
+      <p class="divider-text">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="assets/js/firebase-config.js"></script>
+<script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>

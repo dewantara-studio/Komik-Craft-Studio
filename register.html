@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Daftar — Komik Strip Studio</title>
+<meta name="description" content="Buat akun baru dan mulai perjalanan belajar komikmu." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="halftone-bg">
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-mark"><span>K</span></span>
+    <span class="brand-name">Komik Strip Studio</span>
+  </a>
+</header>
+
+<main class="auth-shell">
+  <div class="auth-panel">
+    <div class="panel">
+      <span class="auth-kicker">Bergabung gratis</span>
+      <h1>Ciptakan ceritamu</h1>
+      <p>Daftar sebagai peserta didik untuk mulai belajar Clip Studio Paint dan membuat komik strip.</p>
+
+      <div id="register-alert" class="alert" role="alert"></div>
+
+      <form id="form-register" novalidate>
+        <div class="field">
+          <label for="register-nama">Nama lengkap</label>
+          <input type="text" id="register-nama" name="nama" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" name="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="register-password">Kata sandi</label>
+          <input type="password" id="register-password" name="password" autocomplete="new-password" minlength="6" required />
+          <p class="field-hint">Minimal 6 karakter.</p>
+        </div>
+        <div class="field">
+          <label for="register-konfirmasi">Konfirmasi kata sandi</label>
+          <input type="password" id="register-konfirmasi" name="konfirmasi" autocomplete="new-password" minlength="6" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Daftar</button>
+      </form>
+
+      <p class="divider-text">Sudah punya akun? <a href="index.html">Masuk di sini</a></p>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="assets/js/firebase-config.js"></script>
+<script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>
