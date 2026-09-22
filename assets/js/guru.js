@@ -41,7 +41,7 @@ onAuthStateChanged(auth, async (user) => {
         row.style.marginBottom = "14px";
         row.innerHTML = `
           <h3 style="margin:0 0 6px;">${s.nama || "(tanpa nama)"}</h3>
-          <p style="margin:0 0 10px; font-size:0.85rem;">${s.email || ""} · ${s.xp || 0} XP</p>
+          <p style="margin:0 0 10px; font-size:0.85rem;">@${s.username || "-"} · ${s.xp || 0} XP</p>
           <p style="margin:0 0 4px; font-size:0.85rem; font-weight:600;">Clip Studio Paint — ${persenCsp}%</p>
           <div class="progress-bar" style="margin-bottom:10px;"><span style="width:${persenCsp}%"></span></div>
           <p style="margin:0 0 4px; font-size:0.85rem; font-weight:600;">Komik — ${persenKomik}%</p>

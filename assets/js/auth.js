@@ -1,5 +1,15 @@
 // =========================================================
-// KOMIK STRIP STUDIO — Autentikasi (TAHAP 1)
+// KOMIK STRIP STUDIO — Autentikasi pakai USERNAME (TAHAP 1)
+// =========================================================
+// CATATAN TEKNIS: Firebase Authentication (paket Email/Password)
+// secara teknis tetap butuh format email di baliknya. Supaya
+// peserta didik cukup mengingat USERNAME (bukan email), setiap
+// username otomatis diubah jadi alamat email "palsu" seperti
+// "budi123@komikstripstudio.app" sebelum dikirim ke Firebase.
+// Alamat ini TIDAK dipakai untuk mengirim email sungguhan —
+// hanya dipakai Firebase di belakang layar untuk login.
+// Keunikan username otomatis terjamin karena Firebase menolak
+// dua akun dengan "email" (hasil konversi) yang sama persis.
 // =========================================================
 import { auth, db } from "./firebase-config.js";
 import {
@@ -14,6 +24,13 @@ import {
   setDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const DOMAIN_LOGIN = "@komikstripstudio.app";
+const POLA_USERNAME = /^[a-zA-Z0-9_]{4,20}$/;
+
+function usernameKeEmail(username) {
+  return `${username.trim().toLowerCase()}${DOMAIN_LOGIN}`;
+}
 
 // ---------- Util ----------
 function showAlert(el, message, type = "error") {
@@ -32,11 +49,11 @@ function setLoading(button, isLoading, labelDefault, labelLoading) {
 }
 function pesanErrorFirebase(kode) {
   const peta = {
-    "auth/invalid-email": "Format email tidak valid.",
-    "auth/user-not-found": "Email belum terdaftar. Silakan daftar dulu.",
+    "auth/invalid-email": "Username mengandung karakter yang tidak diperbolehkan.",
+    "auth/user-not-found": "Username belum terdaftar. Silakan daftar dulu.",
     "auth/wrong-password": "Kata sandi salah. Coba lagi.",
-    "auth/invalid-credential": "Email atau kata sandi salah.",
-    "auth/email-already-in-use": "Email ini sudah terdaftar. Silakan masuk.",
+    "auth/invalid-credential": "Username atau kata sandi salah.",
+    "auth/email-already-in-use": "Username ini sudah dipakai. Coba username lain.",
     "auth/weak-password": "Kata sandi minimal 6 karakter.",
     "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat lagi.",
     "auth/network-request-failed": "Koneksi bermasalah. Periksa jaringan internet."
@@ -58,12 +75,17 @@ if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     hideAlert(alertEl);
-    const email = document.getElementById("login-email").value.trim();
+    const username = document.getElementById("login-username").value.trim();
     const password = document.getElementById("login-password").value;
+
+    if (!username) {
+      showAlert(alertEl, "Username wajib diisi.");
+      return;
+    }
 
     setLoading(submitBtn, true, "Masuk", "Memproses…");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, usernameKeEmail(username), password);
       window.location.href = "dashboard.html";
     } catch (err) {
       showAlert(alertEl, pesanErrorFirebase(err.code));
@@ -87,10 +109,14 @@ if (registerForm) {
     hideAlert(alertEl);
 
     const nama = document.getElementById("register-nama").value.trim();
-    const email = document.getElementById("register-email").value.trim();
+    const username = document.getElementById("register-username").value.trim();
     const password = document.getElementById("register-password").value;
     const konfirmasi = document.getElementById("register-konfirmasi").value;
 
+    if (!POLA_USERNAME.test(username)) {
+      showAlert(alertEl, "Username 4-20 karakter, hanya huruf, angka, dan garis bawah (_), tanpa spasi.");
+      return;
+    }
     if (password !== konfirmasi) {
       showAlert(alertEl, "Konfirmasi kata sandi tidak sama.");
       return;
@@ -102,14 +128,14 @@ if (registerForm) {
 
     setLoading(submitBtn, true, "Daftar", "Membuat akun…");
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, usernameKeEmail(username), password);
       await updateProfile(cred.user, { displayName: nama });
 
       // Profil disimpan di Firestore, BUKAN kata sandi.
       // Kata sandi sepenuhnya dikelola oleh Firebase Authentication.
       await setDoc(doc(db, "users", cred.user.uid), {
         nama,
-        email,
+        username: username.toLowerCase(),
         role: "peserta_didik",
         xp: 0,
         badges: [],

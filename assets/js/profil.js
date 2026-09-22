@@ -8,7 +8,7 @@ import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13
 const loadingEl = document.getElementById("profil-loading");
 const formEl = document.getElementById("form-profil");
 const namaInput = document.getElementById("profil-nama");
-const emailEl = document.getElementById("profil-email");
+const usernameEl = document.getElementById("profil-username");
 const roleEl = document.getElementById("profil-role");
 const msgEl = document.getElementById("profil-msg");
 
@@ -21,7 +21,7 @@ onAuthStateChanged(auth, async (user) => {
     const snap = await getDoc(doc(db, "users", user.uid));
     const data = snap.exists() ? snap.data() : {};
     if (namaInput) namaInput.value = data.nama || user.displayName || "";
-    if (emailEl) emailEl.textContent = data.email || user.email || "";
+    if (usernameEl) usernameEl.textContent = data.username ? `@${data.username}` : "-";
     if (roleEl) roleEl.textContent = LABEL_ROLE[data.role] || data.role || "-";
   } catch (err) {
     console.error("Gagal memuat profil:", err);
