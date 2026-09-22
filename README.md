@@ -45,15 +45,50 @@ komik-strip-studio/
 
 Isi tiap level di `csp-levels.js` dan `komik-levels.js` masih **versi ringkas**
 (tanpa screenshot asli Clip Studio Paint, karena AI tidak bisa membuat
-screenshot software sungguhan). Supaya materi benar-benar siap dipakai
-peserta didik, edit dua file itu untuk:
-- menambahkan gambar/screenshot asli di tiap langkah (bisa tambah field
-  `gambar: "assets/img/nama-file.png"` lalu render di `materi-detail.js`),
-  dan
-- memperpanjang penjelasan tiap langkah kalau perlu.
+screenshot software sungguhan). Struktur datanya sengaja dibuat sederhana
+(array of object) supaya kamu bisa mengedit kontennya tanpa menyentuh kode
+HTML/JS lain.
 
-Struktur datanya sengaja dibuat sederhana (array of object) supaya kamu
-bisa mengedit kontennya tanpa menyentuh kode HTML/JS lain.
+### Cara menambahkan screenshot ke materi
+
+Sistem penampil gambar **sudah siap dipakai** — kamu tinggal menaruh file
+gambar dan menulis nama filenya di data. Tidak perlu ubah kode apa pun.
+
+1. **Ambil screenshot** di Clip Studio Paint (misalnya pakai Snipping Tool
+   di Windows atau Cmd+Shift+4 di Mac). Simpan sebagai `.png` atau `.jpg`.
+   Disarankan lebar sekitar 1000–1400px supaya file tidak terlalu berat.
+
+2. **Taruh filenya** di folder:
+   - Materi Clip Studio Paint → `assets/img/materi-csp/`
+   - Materi Komik → `assets/img/materi-komik/`
+
+   Gunakan nama file yang jelas, contoh: `level1-tampilan-utama.png`,
+   `level2-langkah1.png`, dst. (Dua folder ini sudah dibuat, saat ini
+   masih kosong — isi sendiri dengan screenshot kamu.)
+
+3. **Tulis nama filenya** di `csp-levels.js` atau `komik-levels.js`, pada
+   langkah yang sesuai, dengan menambahkan field `gambar`:
+
+   ```js
+   { judul: "Mengenal tampilan utama",
+     pahami: "Penjelasan singkatnya di sini...",
+     gambar: "assets/img/materi-csp/level1-tampilan-utama.png" }
+   ```
+
+   Field `gambar` ini **opsional** — kalau tidak ditulis, langkah itu akan
+   tampil tanpa gambar seperti sekarang. Contoh yang sudah saya isi:
+   **Level 1** (langkah "Mengenal tampilan utama") dan **seluruh Level 2**
+   ("Membuat Canvas") — nama filenya sudah saya tulis di data, kamu tinggal
+   menaruh 6 file gambar dengan nama persis seperti itu di
+   `assets/img/materi-csp/` supaya langsung muncul, tanpa perlu edit kode.
+
+4. **Simpan file, refresh browser** — gambar langsung muncul di halaman
+   materi terkait. Kalau memakai hosting statis (GitHub Pages, Firebase
+   Hosting, dll), pastikan folder `assets/img/` ikut ter-upload.
+
+Ulangi pola ini untuk level-level lain sesuai kebutuhan — tidak semua
+langkah wajib punya gambar, tambahkan saja di bagian yang menurutmu paling
+butuh panduan visual.
 
 ### Catatan soal Komik Studio & penyimpanan karya
 

@@ -19,6 +19,7 @@ const titleEl = document.getElementById("detail-title");
 const backLink = document.getElementById("detail-back");
 const stepArea = document.getElementById("step-area");
 const stepCounter = document.getElementById("step-counter");
+const stepImg = document.getElementById("step-img");
 const stepTitle = document.getElementById("step-title");
 const stepBody = document.getElementById("step-body");
 const btnPrev = document.getElementById("btn-prev");
@@ -44,6 +45,19 @@ if (!level) {
     stepCounter.textContent = `LANGKAH ${langkahAktif + 1} DARI ${totalLangkah}`;
     stepTitle.textContent = l.judul;
     stepBody.textContent = l.pahami;
+
+    // Gambar/screenshot opsional. Isi field "gambar" di file data
+    // (csp-levels.js / komik-levels.js) untuk menampilkannya di sini.
+    stepImg.innerHTML = "";
+    if (l.gambar) {
+      const img = document.createElement("img");
+      img.src = l.gambar;
+      img.alt = l.judul;
+      img.loading = "lazy";
+      img.style.cssText = "width:100%; border:3px solid var(--line); border-radius:10px; margin-bottom:16px; display:block;";
+      stepImg.appendChild(img);
+    }
+
     btnPrev.disabled = langkahAktif === 0;
     btnNext.textContent = langkahAktif === totalLangkah - 1 ? "Lanjut ke checklist →" : "Lanjut →";
   }
