@@ -11,17 +11,61 @@ Firebase, dan dasbor dasar.
 
 ```
 komik-strip-studio/
-├── index.html            # Halaman login
-├── register.html          # Halaman pendaftaran
-├── dashboard.html          # Dasbor peserta didik (butuh login)
-├── firestore.rules         # Aturan keamanan Firestore
+├── index.html               # Login
+├── register.html            # Pendaftaran
+├── dashboard.html           # Dasbor peserta didik
+├── materi.html               # Daftar materi (CSP / Komik, lewat ?jenis=)
+├── materi-detail.html        # Materi step-by-step + checklist
+├── latihan.html               # Latihan interaktif (checklist)
+├── komik-studio.html          # Editor komik sederhana (canvas)
+├── komik-saya.html            # Portofolio karya
+├── badge.html                 # Badge (dihitung otomatis dari progress)
+├── profil.html                # Edit nama profil
+├── guru.html                  # Dashboard guru (progress semua peserta didik)
+├── firestore.rules            # Aturan keamanan Firestore
 ├── assets/
-│   ├── css/style.css       # Sistem desain (warna, tipografi, komponen)
-│   └── js/
-│       ├── firebase-config.js  # Konfigurasi Firebase (WAJIB diisi)
-│       ├── auth.js             # Login, register, logout
-│       └── dashboard.js        # Ambil data profil untuk dasbor
+│   ├── css/style.css          # Sistem desain (warna, tipografi, komponen)
+│   ├── js/
+│   │   ├── firebase-config.js # Konfigurasi Firebase (WAJIB diisi)
+│   │   ├── auth.js            # Login, register, logout
+│   │   ├── dashboard.js       # Data dasbor (progress, XP, next step)
+│   │   ├── materi.js          # Daftar level materi + status kunci
+│   │   ├── materi-detail.js   # Stepper + checklist + simpan progress
+│   │   ├── latihan.js         # Checklist latihan
+│   │   ├── studio.js          # Editor canvas + simpan karya
+│   │   ├── portfolio.js       # Tampilkan & hapus karya
+│   │   ├── guru.js            # Data progress semua peserta didik
+│   │   └── profil.js          # Update nama profil
+│   └── js/data/
+│       ├── csp-levels.js      # Konten 12 level materi Clip Studio Paint
+│       └── komik-levels.js    # Konten 13 level materi Belajar Komik
 ```
+
+### Catatan penting soal konten materi
+
+Isi tiap level di `csp-levels.js` dan `komik-levels.js` masih **versi ringkas**
+(tanpa screenshot asli Clip Studio Paint, karena AI tidak bisa membuat
+screenshot software sungguhan). Supaya materi benar-benar siap dipakai
+peserta didik, edit dua file itu untuk:
+- menambahkan gambar/screenshot asli di tiap langkah (bisa tambah field
+  `gambar: "assets/img/nama-file.png"` lalu render di `materi-detail.js`),
+  dan
+- memperpanjang penjelasan tiap langkah kalau perlu.
+
+Struktur datanya sengaja dibuat sederhana (array of object) supaya kamu
+bisa mengedit kontennya tanpa menyentuh kode HTML/JS lain.
+
+### Catatan soal Komik Studio & penyimpanan karya
+
+Komik Studio adalah editor gambar sederhana berbasis `<canvas>` HTML5
+(brush, eraser, teks, balon dialog) — bukan pengganti Clip Studio Paint,
+sesuai maksud awal. Untuk TAHAP 1 s.d. TAHAP 11 ini, hasil karya disimpan
+sebagai gambar PNG (base64) langsung di dokumen Firestore
+(`users/{uid}/karya/{karyaId}`) supaya tidak perlu mengatur Firebase
+Storage dulu. Ini cukup untuk gambar-gambar sederhana, tapi kalau nanti
+karya makin besar/detail, sebaiknya pindahkan penyimpanan gambar ke
+**Firebase Storage** (upload file, simpan hanya `thumbnailUrl` di
+Firestore) supaya lebih hemat dan cepat.
 
 ## Cara menjalankan
 
@@ -62,19 +106,26 @@ Registrasi mandiri hanya membuat akun dengan `role: "peserta_didik"`.
 Untuk menjadikan seseorang **guru**, ubah field `role` dokumennya secara
 manual di Firestore Console menjadi `"guru"`.
 
-## Roadmap tahap berikutnya
+## Roadmap tahap
 
-- [x] Tahap 1 — Login, register, Firebase Auth, logout, dasbor dasar,
-      profil Firestore, security rules
-- [ ] Tahap 2 — Dasbor lengkap (progress, XP, badge nyata)
-- [ ] Tahap 3 — Sistem materi Clip Studio Paint (Level 1–12)
-- [ ] Tahap 4 — Tutorial step-by-step
-- [ ] Tahap 5 — Checklist + progress per materi
-- [ ] Tahap 6 — Latihan interaktif
-- [ ] Tahap 7 — Materi membuat komik
-- [ ] Tahap 8 — Komik Studio (editor sederhana)
-- [ ] Tahap 9 — Penyimpanan karya (Firestore + Storage)
-- [ ] Tahap 10 — Portofolio (Komik Saya)
-- [ ] Tahap 11 — Dashboard Guru
+- [x] Tahap 1 — Login, register, Firebase Auth, logout, dasbor dasar, profil Firestore, security rules
+- [x] Tahap 2 — Dasbor lengkap (progress asli, XP, "perjalanan belajar" dinamis)
+- [x] Tahap 3 — Sistem materi Clip Studio Paint (Level 1–12, `materi.html?jenis=csp`)
+- [x] Tahap 4 — Tutorial step-by-step (`materi-detail.html`, tombol Sebelumnya/Lanjut)
+- [x] Tahap 5 — Checklist + progress per materi (tersimpan ke Firestore, +10 XP per level)
+- [x] Tahap 6 — Latihan interaktif (`latihan.html`, checklist tersimpan)
+- [x] Tahap 7 — Materi membuat komik (Level 1–13, `materi.html?jenis=komik`)
+- [x] Tahap 8 — Komik Studio: editor canvas sederhana (brush, eraser, teks, balon, undo/redo)
+- [x] Tahap 9 — Penyimpanan karya ke Firestore (`users/{uid}/karya`), badge otomatis
+- [x] Tahap 10 — Portofolio "Komik Saya" (lihat & hapus karya)
+- [x] Tahap 11 — Dashboard Guru (progress semua peserta didik)
 
-Katakan **"LANJUT KE TAHAP 2"** untuk melanjutkan pembangunan.
+Semua tahap sudah berbentuk kerangka yang **berfungsi dan bisa dijalankan**.
+Yang masih perlu kamu lengkapi sendiri (lihat catatan di atas):
+- Konten materi yang lebih detail + screenshot asli Clip Studio Paint
+- (Opsional) pindahkan penyimpanan gambar karya ke Firebase Storage
+- (Opsional) desain badge sebagai gambar, bukan ikon emoji
+
+Untuk menjadikan akun tertentu sebagai **guru**, ubah field `role` dokumen
+`users/{uid}` orang itu di Firestore Console menjadi `"guru"` — menu
+📊 Dashboard Guru akan otomatis muncul di navigasi.

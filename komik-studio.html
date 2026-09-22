@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Komik Studio — Komik Strip Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+<style>
+  .studio-layout { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+  .studio-toolbar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .tool-btn {
+    border:2px solid var(--line); background:var(--paper); border-radius:8px;
+    padding:8px 12px; font-weight:600; cursor:pointer; font-size:0.9rem;
+  }
+  .tool-btn.active { background:var(--yellow); }
+  #studio-canvas {
+    width:100%; max-width:640px; aspect-ratio: 4 / 3;
+    border:3px solid var(--line); border-radius:10px; background:#fff;
+    touch-action:none; cursor:crosshair;
+  }
+  .studio-side { flex:1 1 220px; min-width:220px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"><span>K</span></span>
+    <span class="brand-name">Komik Strip Studio</span>
+  </a>
+  <div class="top-actions">
+    <button class="icon-btn" type="button" data-action="logout">Keluar</button>
+  </div>
+</header>
+
+<div class="dash-shell">
+  <nav class="dash-nav" aria-label="Navigasi utama">
+    <ul>
+      <li><a href="dashboard.html">🏠 Beranda</a></li>
+      <li><a href="materi.html?jenis=csp">🎨 Belajar Clip Studio Paint</a></li>
+      <li><a href="materi.html?jenis=komik">📚 Belajar Komik</a></li>
+      <li><a href="latihan.html">✏️ Latihan</a></li>
+      <li><a href="komik-studio.html" class="active">🖌️ Komik Studio</a></li>
+      <li><a href="komik-saya.html">📁 Komik Saya</a></li>
+      <li><a href="badge.html">🏆 Badge</a></li>
+      <li><a href="profil.html">👤 Profil</a></li>
+    </ul>
+    <div class="nav-guru" id="nav-guru" hidden>
+      <a href="guru.html">📊 Dashboard Guru</a>
+    </div>
+  </nav>
+
+  <main class="dash-main">
+    <h1>🖌️ Komik Studio</h1>
+    <p>Editor latihan sederhana untuk membuat komik strip. Untuk menggambar detail, tetap gunakan Clip Studio Paint ya!</p>
+
+    <div class="studio-layout">
+      <div>
+        <div class="studio-toolbar">
+          <button class="tool-btn active" data-tool="brush" type="button">🖊️ Brush</button>
+          <button class="tool-btn" data-tool="eraser" type="button">🧽 Eraser</button>
+          <button class="tool-btn" data-tool="text" type="button">🔤 Text</button>
+          <button class="tool-btn" data-tool="balloon" type="button">💬 Balloon</button>
+        </div>
+        <canvas id="studio-canvas" width="800" height="600"></canvas>
+      </div>
+
+      <div class="studio-side panel">
+        <div class="field">
+          <label for="panel-count">Jumlah panel</label>
+          <select id="panel-count" data-last="1">
+            <option value="1">1 Panel</option>
+            <option value="2">2 Panel</option>
+            <option value="3">3 Panel</option>
+            <option value="4">4 Panel</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="tool-color">Warna</label>
+          <input type="color" id="tool-color" value="#1C1B19" style="width:100%; height:44px; border:3px solid var(--line); border-radius:10px; padding:2px;" />
+        </div>
+        <div class="field">
+          <label for="tool-size">Ukuran brush</label>
+          <input type="range" id="tool-size" min="1" max="30" value="4" style="width:100%;" />
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:18px;">
+          <button id="btn-undo" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">↩ Undo</button>
+          <button id="btn-redo" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">↪ Redo</button>
+          <button id="btn-clear" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">🗑</button>
+        </div>
+
+        <hr style="border:none; border-top:2px dashed var(--ink-soft); margin:18px 0;" />
+
+        <div class="field">
+          <label for="karya-judul">Judul komik</label>
+          <input type="text" id="karya-judul" placeholder="Contoh: Pensilku Hilang" />
+        </div>
+        <div class="field">
+          <label for="karya-status">Status</label>
+          <select id="karya-status">
+            <option value="draft">Draft</option>
+            <option value="selesai">Selesai</option>
+            <option value="dipublikasikan">Dipublikasikan</option>
+          </select>
+        </div>
+        <button id="btn-simpan-karya" class="btn btn-primary" type="button">Simpan Karya</button>
+        <p id="simpan-msg" class="field-hint" hidden></p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="assets/js/firebase-config.js"></script>
+<script type="module" src="assets/js/studio.js"></script>
+<script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>

@@ -43,6 +43,15 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Karya komik milik peserta didik: hanya pemiliknya yang boleh
+    // membuat/mengubah/menghapus. Guru boleh membaca (untuk melihat
+    // portofolio), tapi tidak boleh mengubah/menghapus.
+    match /users/{userId}/karya/{karyaId} {
+      allow read: if isOwner(userId) || isGuru();
+      allow create, update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
     // Tutup semua koleksi lain secara default sampai
     // ditambahkan aturan spesifik di tahap berikutnya
     // (materi, latihan, komik, badge, dll).

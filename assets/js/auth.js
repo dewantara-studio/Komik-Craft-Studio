@@ -113,11 +113,14 @@ if (registerForm) {
         role: "peserta_didik",
         xp: 0,
         badges: [],
+        // progress.csp & progress.komik: daftar id level yang sudah
+        // diselesaikan (mengacu ke assets/js/data/csp-levels.js dan
+        // komik-levels.js)
         progress: {
-          clipStudioPaint: 0,
-          komikStrip: 0,
-          projekAkhir: 0
+          csp: [],
+          komik: []
         },
+        latihanSelesai: [],
         dibuatPada: serverTimestamp()
       });
 

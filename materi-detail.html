@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Materi — Komik Strip Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark"><span>K</span></span>
+    <span class="brand-name">Komik Strip Studio</span>
+  </a>
+  <div class="top-actions">
+    <a class="icon-btn" id="detail-back" href="materi.html">← Kembali</a>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:32px; padding-bottom:60px; max-width:640px;">
+  <h1 id="detail-title">Materi</h1>
+
+  <div id="step-area" class="panel">
+    <p class="auth-kicker" id="step-counter" style="margin-bottom:10px;">LANGKAH 1 DARI 1</p>
+    <h3 id="step-title" style="margin-top:0;"></h3>
+    <p id="step-body"></p>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button id="btn-prev" class="btn btn-secondary" type="button">← Sebelumnya</button>
+      <button id="btn-next" class="btn btn-primary" type="button">Lanjut →</button>
+    </div>
+  </div>
+
+  <div id="checklist-area" class="panel" hidden>
+    <h3 style="margin-top:0;">Sebelum lanjut, cek dulu ✓</h3>
+    <ul id="checklist-list" style="list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:8px;"></ul>
+    <button id="btn-selesai" class="btn btn-primary" type="button" disabled>Materi Selesai 🎉</button>
+  </div>
+
+  <div id="done-msg" class="panel panel-alt" hidden>
+    <h3 style="margin-top:0;">Materi selesai! 🎉</h3>
+    <p>Kerja bagus! Progres dan XP kamu sudah tersimpan.</p>
+    <a href="materi.html" id="done-back" class="btn btn-primary" style="width:auto; display:inline-flex; padding:12px 24px;">Kembali ke daftar materi</a>
+  </div>
+</main>
+
+<script type="module" src="assets/js/firebase-config.js"></script>
+<script type="module" src="assets/js/materi-detail.js"></script>
+<script>
+  const j = new URLSearchParams(location.search).get("jenis") === "komik" ? "komik" : "csp";
+  document.getElementById("done-back").href = `materi.html?jenis=${j}`;
+</script>
+</body>
+</html>

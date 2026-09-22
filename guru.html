@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Dasbor — Komik Strip Studio</title>
+<title>Dashboard Guru — Komik Strip Studio</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖍️</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,6 @@
     <span class="brand-name">Komik Strip Studio</span>
   </a>
   <div class="top-actions">
-    <span id="dash-xp" class="icon-btn" style="cursor:default;">0 XP</span>
     <button class="icon-btn" type="button" data-action="logout">Keluar</button>
   </div>
 </header>
@@ -26,7 +25,7 @@
 <div class="dash-shell">
   <nav class="dash-nav" aria-label="Navigasi utama">
     <ul>
-      <li><a href="dashboard.html" class="active">🏠 Beranda</a></li>
+      <li><a href="dashboard.html">🏠 Beranda</a></li>
       <li><a href="materi.html?jenis=csp">🎨 Belajar Clip Studio Paint</a></li>
       <li><a href="materi.html?jenis=komik">📚 Belajar Komik</a></li>
       <li><a href="latihan.html">✏️ Latihan</a></li>
@@ -35,34 +34,23 @@
       <li><a href="badge.html">🏆 Badge</a></li>
       <li><a href="profil.html">👤 Profil</a></li>
     </ul>
-    <div class="nav-guru" id="nav-guru" hidden>
-      <a href="guru.html">📊 Dashboard Guru</a>
+    <div class="nav-guru" id="nav-guru">
+      <a href="guru.html" class="active">📊 Dashboard Guru</a>
     </div>
   </nav>
 
   <main class="dash-main">
-    <div id="dash-loading" class="loading-state">Memuat dasbor…</div>
+    <h1>📊 Dashboard Guru</h1>
+    <p>Progres belajar seluruh peserta didik.</p>
 
-    <div id="dash-content" hidden>
-      <p class="dash-hello" id="dash-hello">SELAMAT DATANG</p>
-      <h1>Lanjutkan belajar</h1>
-
-      <div class="panel" style="max-width:520px;">
-        <h3 style="margin-top:0;" id="dash-next-title">Materi berikutnya</h3>
-        <p style="margin-bottom:6px;">Progres Clip Studio Paint</p>
-        <div class="progress-bar"><span id="dash-progress-bar" style="width:0%"></span></div>
-        <p style="margin:0 0 16px; color:var(--ink-soft); font-weight:600;" id="dash-progress-value">0%</p>
-        <a href="materi.html?jenis=csp" id="dash-next-link" class="btn btn-primary" style="width:auto; display:inline-flex; padding:12px 24px;">Lanjutkan →</a>
-      </div>
-
-      <h2 style="margin-top:36px;">Perjalanan belajar</h2>
-      <ul class="journey" id="dash-journey"></ul>
-    </div>
+    <div id="guru-loading" class="loading-state">Memuat data…</div>
+    <div id="guru-denied" class="empty-state" hidden>Halaman ini khusus untuk akun guru.</div>
+    <div id="guru-list" hidden></div>
   </main>
 </div>
 
 <script type="module" src="assets/js/firebase-config.js"></script>
-<script type="module" src="assets/js/dashboard.js"></script>
+<script type="module" src="assets/js/guru.js"></script>
 <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
