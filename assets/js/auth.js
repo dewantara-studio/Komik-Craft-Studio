@@ -100,13 +100,20 @@ if (registerForm) {
   const alertEl = document.getElementById("register-alert");
   const submitBtn = registerForm.querySelector("button[type='submit']");
 
-  onAuthStateChanged(auth, (user) => {
+  // Auto-redirect kalau orang buka halaman Daftar padahal sudah login.
+  // PENTING: begitu form submit mulai diproses, listener ini kita
+  // matikan (unsubscribe) — soalnya createUserWithEmailAndPassword
+  // langsung men-trigger login otomatis, dan kalau listener ini masih
+  // aktif, dia akan buru-buru redirect ke dashboard SEBELUM proses
+  // setDoc() di bawah sempat selesai menyimpan profil ke Firestore.
+  const unsubscribeAutoRedirect = onAuthStateChanged(auth, (user) => {
     if (user) window.location.href = "dashboard.html";
   });
 
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     hideAlert(alertEl);
+    unsubscribeAutoRedirect();
 
     const nama = document.getElementById("register-nama").value.trim();
     const username = document.getElementById("register-username").value.trim();
@@ -152,6 +159,7 @@ if (registerForm) {
 
       window.location.href = "dashboard.html";
     } catch (err) {
+      console.error("Gagal mendaftar:", err);
       showAlert(alertEl, pesanErrorFirebase(err.code));
       setLoading(submitBtn, false, "Daftar", "Membuat akun…");
     }
