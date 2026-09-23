@@ -5,12 +5,14 @@ import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { KOMIK_LEVELS } from "./data/komik-levels.js";
+import { LATIHAN_CSP, LATIHAN_KOMIK } from "./data/latihan-data.js";
 
 const listEl = document.getElementById("badge-list");
 const loadingEl = document.getElementById("badge-loading");
 const xpEl = document.getElementById("badge-xp");
+const TOTAL_LATIHAN = LATIHAN_CSP.length + LATIHAN_KOMIK.length;
 
-function daftarBadge(csp, komik, jumlahKarya) {
+function daftarBadge(csp, komik, jumlahKarya, jumlahLatihan) {
   return [
     { ikon: "🏅", nama: "Kenal Clip Studio Paint", didapat: csp.includes(1) },
     { ikon: "🏅", nama: "Brush Master", didapat: csp.includes(3) },
@@ -19,7 +21,8 @@ function daftarBadge(csp, komik, jumlahKarya) {
     { ikon: "🏅", nama: "Comic Beginner", didapat: komik.includes(1) },
     { ikon: "🏅", nama: "Storyteller", didapat: komik.includes(4) },
     { ikon: "🏅", nama: "Comic Creator", didapat: komik.length === KOMIK_LEVELS.length },
-    { ikon: "🏅", nama: "Komik Pertamaku", didapat: jumlahKarya > 0 }
+    { ikon: "🏅", nama: "Komik Pertamaku", didapat: jumlahKarya > 0 },
+    { ikon: "🏅", nama: "Rajin Berlatih", didapat: jumlahLatihan >= TOTAL_LATIHAN }
   ];
 }
 
@@ -33,11 +36,12 @@ onAuthStateChanged(auth, async (user) => {
     const komik = data.progress?.komik || [];
 
     const karyaSnap = await getDocs(collection(db, "users", user.uid, "karya"));
+    const jumlahLatihan = (data.latihanSelesai || []).length;
 
     if (xpEl) xpEl.textContent = `${data.xp || 0} XP`;
 
     if (listEl) {
-      listEl.innerHTML = daftarBadge(csp, komik, karyaSnap.size).map((b) => `
+      listEl.innerHTML = daftarBadge(csp, komik, karyaSnap.size, jumlahLatihan).map((b) => `
         <div class="mini-card ${b.didapat ? "" : "locked"}">
           <div style="font-size:2rem; margin-bottom:6px;">${b.didapat ? b.ikon : "🔒"}</div>
           <h3 style="margin:0;">${b.nama}</h3>

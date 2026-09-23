@@ -1,17 +1,37 @@
 // =========================================================
-// KOMIK STRIP STUDIO — Latihan interaktif (TAHAP 6)
+// KOMIK STRIP STUDIO — Latihan interaktif (TAHAP 6, diperdalam)
 // =========================================================
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { LATIHAN_CSP, LATIHAN_KOMIK } from "./data/latihan-data.js";
 
 const KATEGORI = [
-  { judul: "Latihan Clip Studio Paint", ikon: "🎨", item: ["Brush", "Eraser", "Layer", "Selection", "Transform", "Color", "Text"] },
-  { judul: "Latihan Komik", ikon: "📚", item: ["Ekspresi", "Karakter", "Panel", "Storyboard", "Dialog", "Warna", "Background"] }
+  { key: "csp", judul: "Latihan Clip Studio Paint", ikon: "🎨", item: LATIHAN_CSP },
+  { key: "komik", judul: "Latihan Komik", ikon: "📚", item: LATIHAN_KOMIK }
 ];
 
 const wrapEl = document.getElementById("latihan-wrap");
 const loadingEl = document.getElementById("latihan-loading");
+
+function kartuLatihan(kat, it, selesai) {
+  const key = `${kat.key}:${it.nama}`;
+  const checked = selesai.includes(key);
+  const gambarHtml = it.gambar
+    ? `<img src="${it.gambar}" alt="${it.nama}" style="width:100%; border:2px solid var(--line); border-radius:8px; margin:8px 0;" />`
+    : "";
+  return `
+    <div class="mini-card ${checked ? "" : ""}" style="margin-bottom:10px;">
+      <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
+        <input type="checkbox" data-key="${key}" ${checked ? "checked" : ""} style="width:20px; height:20px; margin-top:2px; flex-shrink:0;" />
+        <span style="flex:1;">
+          <span class="tag" style="margin-bottom:6px;">${it.ikon} ${it.nama}</span>
+          ${gambarHtml}
+          <p style="margin:4px 0 0; font-size:0.9rem;">${it.instruksi}</p>
+        </span>
+      </label>
+    </div>`;
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = "index.html"; return; }
@@ -25,23 +45,17 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   if (wrapEl) {
-    wrapEl.innerHTML = KATEGORI.map((kat) => `
-      <div class="panel" style="margin-bottom:22px;">
-        <h3 style="margin-top:0;">${kat.ikon} ${kat.judul}</h3>
-        <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;">
-          ${kat.item.map((it) => {
-            const key = `${kat.judul}:${it}`;
-            const checked = selesai.includes(key) ? "checked" : "";
-            return `<li>
-              <label style="display:flex; align-items:center; gap:10px; padding:8px 4px; cursor:pointer;">
-                <input type="checkbox" data-key="${key}" ${checked} style="width:18px;height:18px;" />
-                <span>${it}</span>
-              </label>
-            </li>`;
-          }).join("")}
-        </ul>
-      </div>
-    `).join("");
+    wrapEl.innerHTML = KATEGORI.map((kat) => {
+      const jumlahSelesai = kat.item.filter((it) => selesai.includes(`${kat.key}:${it.nama}`)).length;
+      return `
+        <div class="panel" style="margin-bottom:22px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <h3 style="margin:0;">${kat.ikon} ${kat.judul}</h3>
+            <span class="auth-kicker" style="margin:0;">${jumlahSelesai}/${kat.item.length} selesai</span>
+          </div>
+          ${kat.item.map((it) => kartuLatihan(kat, it, selesai)).join("")}
+        </div>`;
+    }).join("");
 
     wrapEl.querySelectorAll("input[type='checkbox']").forEach((box) => {
       box.addEventListener("change", async () => {

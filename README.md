@@ -27,18 +27,20 @@ komik-strip-studio/
 │   ├── css/style.css          # Sistem desain (warna, tipografi, komponen)
 │   ├── js/
 │   │   ├── firebase-config.js # Konfigurasi Firebase (WAJIB diisi)
-│   │   ├── auth.js            # Login, register, logout
+│   │   ├── auth.js            # Login, register, logout (sistem username)
 │   │   ├── dashboard.js       # Data dasbor (progress, XP, next step)
 │   │   ├── materi.js          # Daftar level materi + status kunci
 │   │   ├── materi-detail.js   # Stepper + checklist + simpan progress
-│   │   ├── latihan.js         # Checklist latihan
+│   │   ├── latihan.js         # Kartu latihan + instruksi + checklist
 │   │   ├── studio.js          # Editor canvas + simpan karya
 │   │   ├── portfolio.js       # Tampilkan & hapus karya
 │   │   ├── guru.js            # Data progress semua peserta didik
+│   │   ├── badge.js           # Hitung badge otomatis dari progress
 │   │   └── profil.js          # Update nama profil
 │   └── js/data/
 │       ├── csp-levels.js      # Konten 12 level materi Clip Studio Paint
-│       └── komik-levels.js    # Konten 13 level materi Belajar Komik
+│       ├── komik-levels.js    # Konten 13 level materi Belajar Komik
+│       └── latihan-data.js    # Instruksi tiap item Latihan CSP & Komik
 ```
 
 ### Catatan penting soal konten materi
@@ -89,6 +91,22 @@ gambar dan menulis nama filenya di data. Tidak perlu ubah kode apa pun.
 Ulangi pola ini untuk level-level lain sesuai kebutuhan — tidak semua
 langkah wajib punya gambar, tambahkan saja di bagian yang menurutmu paling
 butuh panduan visual.
+
+### Menambahkan gambar ke Latihan
+
+Pola yang sama juga berlaku untuk halaman Latihan. Buka
+`assets/js/data/latihan-data.js`, tambahkan field `gambar` di item yang mau
+dikasih gambar, lalu taruh filenya di:
+- `assets/img/latihan-csp/` untuk Latihan Clip Studio Paint
+- `assets/img/latihan-komik/` untuk Latihan Komik
+
+Contoh:
+
+```js
+{ nama: "Brush", ikon: "🖊️",
+  instruksi: "...",
+  gambar: "assets/img/latihan-csp/brush-contoh.png" }
+```
 
 ### Catatan soal Komik Studio & penyimpanan karya
 
