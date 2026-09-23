@@ -17,12 +17,13 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "ISI_DENGAN_API_KEY",
-  authDomain: "ISI_DENGAN_AUTH_DOMAIN",
-  projectId: "ISI_DENGAN_PROJECT_ID",
-  storageBucket: "ISI_DENGAN_STORAGE_BUCKET",
-  messagingSenderId: "ISI_DENGAN_SENDER_ID",
-  appId: "ISI_DENGAN_APP_ID"
+  apiKey: "AIzaSyCoL8wuF5Up1iik7AE0DQ0cUpv3x90cZ80",
+  authDomain: "komik-craft-studio.firebaseapp.com",
+  projectId: "komik-craft-studio",
+  storageBucket: "komik-craft-studio.firebasestorage.app",
+  messagingSenderId: "403188204371",
+  appId: "1:403188204371:web:2f1cea519e0f5cc66817a6",
+  measurementId: "G-K0KCK57ZY7"
 };
 
 export const app = initializeApp(firebaseConfig);
