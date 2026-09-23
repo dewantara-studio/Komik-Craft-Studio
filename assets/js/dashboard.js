@@ -3,7 +3,7 @@
 // =========================================================
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { CSP_LEVELS } from "./data/csp-levels.js";
 import { KOMIK_LEVELS } from "./data/komik-levels.js";
 
@@ -35,6 +35,14 @@ onAuthStateChanged(auth, async (user) => {
 
     const persenCsp = Math.round((csp.length / CSP_LEVELS.length) * 100);
 
+    let jumlahLatihan = 0;
+    try {
+      const latihanSnap = await getDocs(collection(db, "users", user.uid, "latihanHasil"));
+      jumlahLatihan = latihanSnap.size;
+    } catch (err) {
+      console.error("Gagal memuat jumlah latihan:", err);
+    }
+
     if (helloEl) helloEl.textContent = `SELAMAT DATANG, ${nama.toUpperCase()}`;
     if (progressEl) progressEl.textContent = `${persenCsp}%`;
     if (progressBarEl) progressBarEl.style.width = `${persenCsp}%`;
@@ -55,7 +63,7 @@ onAuthStateChanged(auth, async (user) => {
       const items = [
         { label: "🎨 Clip Studio Paint", done: csp.length > 0, href: "materi.html?jenis=csp" },
         { label: "📚 Belajar Komik", done: komik.length > 0, href: "materi.html?jenis=komik" },
-        { label: "✏️ Latihan", done: (data?.latihanSelesai || []).length > 0, href: "latihan.html" },
+        { label: "✏️ Latihan", done: jumlahLatihan > 0, href: "latihan.html" },
         { label: "🖌️ Komik Studio", done: false, href: "komik-studio.html" },
         { label: "🏆 Projek Akhir", done: cspDone && komikDone, href: "komik-studio.html" },
         { label: "📁 Portofolio", done: false, href: "komik-saya.html" }

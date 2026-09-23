@@ -153,7 +153,6 @@ if (registerForm) {
           csp: [],
           komik: []
         },
-        latihanSelesai: [],
         dibuatPada: serverTimestamp()
       });
 

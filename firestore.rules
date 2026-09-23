@@ -52,6 +52,17 @@ service cloud.firestore {
       allow delete: if isOwner(userId);
     }
 
+    // Hasil latihan (foto yang di-upload peserta didik sebagai bukti
+    // pengerjaan). Satu dokumen per item latihan, ID dokumen = kunci
+    // latihan (misalnya "csp:Brush"). Sama seperti karya: hanya
+    // pemiliknya yang boleh membuat/mengubah/menghapus, guru boleh
+    // membaca untuk memantau.
+    match /users/{userId}/latihanHasil/{latihanId} {
+      allow read: if isOwner(userId) || isGuru();
+      allow create, update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
     // Tutup semua koleksi lain secara default sampai
     // ditambahkan aturan spesifik di tahap berikutnya
     // (materi, latihan, komik, badge, dll).

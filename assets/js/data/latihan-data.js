@@ -1,47 +1,65 @@
 // =========================================================
-// KOMIK STRIP STUDIO — Data Latihan Interaktif
+// KOMIK STRIP STUDIO — Data Latihan Interaktif (auto-deteksi)
 // =========================================================
-// Sama seperti csp-levels.js/komik-levels.js — edit array ini
-// untuk mengubah instruksi latihan. Field "gambar" opsional,
-// taruh filenya di assets/img/latihan-csp/ atau
-// assets/img/latihan-komik/.
+// Tiap item punya "mode" yang menentukan jenis widget interaktif
+// yang dipakai (lihat assets/js/latihan-canvas.js):
+//   draw         - menggambar bebas (auto-selesai kalau cukup terisi)
+//   erase        - menghapus bentuk (auto-selesai kalau cukup terhapus)
+//   color-fill   - mewarnai kotak-kotak
+//   text         - menempatkan teks/balon dialog
+//   manipulate   - memindah/mengubah ukuran/memutar bentuk
+//   layer-sim    - simulasi panel layer (tambah/toggle/urutkan)
 // =========================================================
 
 export const LATIHAN_CSP = [
   {
     nama: "Brush",
     ikon: "🖊️",
-    instruksi: "Buat canvas baru kosong. Pilih Brush di Toolbar, lalu gambar 5 garis berdampingan dengan ukuran brush berbeda-beda (dari paling kecil ke paling besar, lihat pengaturan Size di Tool Property). Perhatikan bagaimana ketebalan garis berubah."
+    instruksi: "Gambar bebas di canvas di bawah ini sampai areanya terisi cukup banyak — latihan mengontrol ketebalan garis.",
+    mode: "draw",
+    config: { minCoverage: 0.04 }
   },
   {
     nama: "Eraser",
     ikon: "🧽",
-    instruksi: "Gambar satu bentuk bebas dengan Brush, lalu pakai Eraser untuk menghapus sebagian kecil garis itu tanpa menghapus seluruhnya. Coba juga ubah ukuran Eraser dan rasakan bedanya saat menghapus detail kecil vs area luas."
+    instruksi: "Hapus sebagian besar bentuk merah di bawah ini memakai Eraser.",
+    mode: "erase",
+    config: { minErase: 0.35 }
   },
   {
     nama: "Layer",
     ikon: "🗂️",
-    instruksi: "Buat 3 layer baru dengan nama berbeda (misalnya 'Sketsa', 'Line Art', 'Warna'). Gambar bentuk sederhana di masing-masing layer dengan warna berbeda, lalu latihan menyembunyikan (hide) satu layer dan mengubah urutan tumpukannya."
+    instruksi: "Coba simulasi panel layer di bawah: tambah layer baru, sembunyikan salah satu layer, lalu ubah urutannya.",
+    mode: "layer-sim",
+    config: { required: ["tambah", "toggle", "urutkan"] }
   },
   {
     nama: "Selection",
     ikon: "🔲",
-    instruksi: "Gambar beberapa bentuk di canvas. Pakai Selection Tool untuk menyeleksi salah satu bentuk saja, lalu coba pindahkan hanya bentuk yang terseleksi itu tanpa mengganggu bentuk lain di sekitarnya."
+    instruksi: "Geser bentuk di bawah ini ke posisi lain — latihan menyeleksi lalu memindahkan objek.",
+    mode: "manipulate",
+    config: { required: ["move"] }
   },
   {
     nama: "Transform",
     ikon: "🔄",
-    instruksi: "Gambar satu bentuk sederhana (misalnya bintang atau kotak). Seleksi bentuk itu, lalu pakai Transform untuk memperbesarnya 2x, memperkecilnya lagi, dan memutarnya 45 derajat."
+    instruksi: "Ubah ukuran bentuk di bawah (tarik titik kuning) dan putar (tarik titik merah).",
+    mode: "manipulate",
+    config: { required: ["resize", "rotate"] }
   },
   {
     nama: "Color",
     ikon: "🎨",
-    instruksi: "Buat 5 kotak kecil berdampingan, lalu warnai masing-masing dengan warna berbeda memakai color wheel di Color Panel. Coba juga buat gradasi terang-gelap dari satu warna yang sama."
+    instruksi: "Pilih warna berbeda-beda dan warnai kelima kotak di bawah ini.",
+    mode: "color-fill",
+    config: { jumlahKotak: 5 }
   },
   {
     nama: "Text",
     ikon: "🔤",
-    instruksi: "Ketik namamu memakai Text Tool. Coba ganti font-nya, perbesar ukurannya, lalu ubah perataannya (rata kiri, tengah, kanan) lewat Tool Property."
+    instruksi: "Tulis namamu di kolom, lalu klik di canvas untuk menaruhnya.",
+    mode: "text",
+    config: {}
   }
 ];
 
@@ -49,36 +67,50 @@ export const LATIHAN_KOMIK = [
   {
     nama: "Ekspresi",
     ikon: "😊",
-    instruksi: "Gambar satu karakter yang sama sebanyak 4 kali berdampingan. Beri tiap salinan ekspresi berbeda: senang, sedih, kaget, marah — tanpa mengubah bentuk dasar wajahnya."
+    instruksi: "Gambar satu ekspresi wajah bebas (senang/sedih/kaget/marah, pilih salah satu) di canvas di bawah.",
+    mode: "draw",
+    config: { minCoverage: 0.03 }
   },
   {
     nama: "Karakter",
     ikon: "🧑‍🎨",
-    instruksi: "Rancang satu karakter baru (boleh selain karakter utamamu) lengkap dengan 2 ciri khas yang mudah dikenali, seperti Level 2 di materi Belajar Komik."
+    instruksi: "Gambar karakter sederhana bebas di canvas di bawah ini.",
+    mode: "draw",
+    config: { minCoverage: 0.04 }
   },
   {
     nama: "Panel",
     ikon: "🔲",
-    instruksi: "Buat satu halaman kosong berisi 4 kotak panel dengan ukuran berbeda-beda (jangan semuanya sama besar) — latihan ini murni soal tata letak, tidak perlu diisi gambar dulu."
+    instruksi: "Canvas di bawah sudah dibagi jadi 4 panel — coba gambar sesuatu di dalamnya, bebas apa saja.",
+    mode: "draw",
+    config: { minCoverage: 0.03, panelCount: 4 }
   },
   {
     nama: "Storyboard",
     ikon: "🗒️",
-    instruksi: "Ambil ide cerita bebas (boleh sangat sederhana), lalu buat storyboard 3 kotak berisi sketsa sangat kasar — jangan pikirkan kerapian, fokus ke alur ceritanya saja."
+    instruksi: "Canvas di bawah sudah dibagi jadi 3 panel — sketsa kasar 3 momen cerita bebas, boleh coret-coretan.",
+    mode: "draw",
+    config: { minCoverage: 0.02, panelCount: 3 }
   },
   {
     nama: "Dialog",
     ikon: "💬",
-    instruksi: "Ambil satu panel dari latihan Panel di atas, tambahkan satu balon dialog berisi kalimat pendek (maksimal 6 kata) yang sesuai dengan situasi di panel itu."
+    instruksi: "Tulis dialog pendek, lalu klik dekat karakter di canvas untuk menaruh balon dialognya.",
+    mode: "text",
+    config: { balloon: true }
   },
   {
     nama: "Warna",
     ikon: "🎨",
-    instruksi: "Ambil karakter dari latihan Karakter di atas, tentukan palet warna tetapnya (warna kulit, rambut, baju), lalu warnai karakter itu secara konsisten."
+    instruksi: "Warnai keempat kotak di bawah ini dengan warna berbeda — latihan menentukan palet warna karakter.",
+    mode: "color-fill",
+    config: { jumlahKotak: 4 }
   },
   {
     nama: "Background",
     ikon: "🏞️",
-    instruksi: "Pilih satu lokasi (kamar, sekolah, rumah, atau taman) dan gambar background sangat sederhana untuk lokasi itu, memakai bentuk-bentuk dasar seperti di Level 8 materi Clip Studio Paint."
+    instruksi: "Gambar background sederhana bebas (kamar/sekolah/rumah/taman, pilih salah satu) di canvas di bawah.",
+    mode: "draw",
+    config: { minCoverage: 0.04 }
   }
 ];

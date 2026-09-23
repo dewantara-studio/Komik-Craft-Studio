@@ -16,7 +16,7 @@ komik-strip-studio/
 ├── dashboard.html           # Dasbor peserta didik
 ├── materi.html               # Daftar materi (CSP / Komik, lewat ?jenis=)
 ├── materi-detail.html        # Materi step-by-step + checklist
-├── latihan.html               # Latihan interaktif (checklist)
+├── latihan.html               # Latihan interaktif otomatis (widget canvas)
 ├── komik-studio.html          # Editor komik sederhana (canvas)
 ├── komik-saya.html            # Portofolio karya
 ├── badge.html                 # Badge (dihitung otomatis dari progress)
@@ -31,7 +31,8 @@ komik-strip-studio/
 │   │   ├── dashboard.js       # Data dasbor (progress, XP, next step)
 │   │   ├── materi.js          # Daftar level materi + status kunci
 │   │   ├── materi-detail.js   # Stepper + checklist + simpan progress
-│   │   ├── latihan.js         # Kartu latihan + instruksi + checklist
+│   │   ├── latihan.js         # Kartu latihan + koneksi ke widget interaktif
+│   │   ├── latihan-canvas.js  # Widget latihan interaktif (draw/erase/color-fill/text/manipulate/layer-sim)
 │   │   ├── studio.js          # Editor canvas + simpan karya
 │   │   ├── portfolio.js       # Tampilkan & hapus karya
 │   │   ├── guru.js            # Data progress semua peserta didik
@@ -92,21 +93,21 @@ Ulangi pola ini untuk level-level lain sesuai kebutuhan — tidak semua
 langkah wajib punya gambar, tambahkan saja di bagian yang menurutmu paling
 butuh panduan visual.
 
-### Menambahkan gambar ke Latihan
+### Catatan soal halaman Latihan
 
-Pola yang sama juga berlaku untuk halaman Latihan. Buka
-`assets/js/data/latihan-data.js`, tambahkan field `gambar` di item yang mau
-dikasih gambar, lalu taruh filenya di:
-- `assets/img/latihan-csp/` untuk Latihan Clip Studio Paint
-- `assets/img/latihan-komik/` untuk Latihan Komik
+Sejak versi ini, halaman Latihan **tidak lagi berbasis upload foto**.
+Tiap item latihan dikerjakan langsung lewat widget interaktif
+(`assets/js/latihan-canvas.js`) yang otomatis mendeteksi kapan
+tugasnya selesai — tidak ada tombol centang manual maupun upload
+sama sekali. Ini membuat latihan lebih ringkas dipakai (tidak perlu
+kamera/HP terpisah) meskipun jadi simulasi sederhana, bukan Clip
+Studio Paint sungguhan.
 
-Contoh:
-
-```js
-{ nama: "Brush", ikon: "🖊️",
-  instruksi: "...",
-  gambar: "assets/img/latihan-csp/brush-contoh.png" }
-```
+Untuk mengubah instruksi atau tingkat kesulitan tiap latihan, edit
+`assets/js/data/latihan-data.js` — tiap item punya `mode` (jenis
+widget yang dipakai) dan `config` (parameter, misalnya `minCoverage`
+untuk latihan menggambar). Daftar mode yang tersedia ada di komentar
+bagian atas `latihan-canvas.js`.
 
 ### Catatan soal Komik Studio & penyimpanan karya
 
@@ -172,8 +173,8 @@ manual di Firestore Console menjadi `"guru"`.
 - [x] Tahap 2 — Dasbor lengkap (progress asli, XP, "perjalanan belajar" dinamis)
 - [x] Tahap 3 — Sistem materi Clip Studio Paint (Level 1–12, `materi.html?jenis=csp`)
 - [x] Tahap 4 — Tutorial step-by-step (`materi-detail.html`, tombol Sebelumnya/Lanjut)
-- [x] Tahap 5 — Checklist + progress per materi (tersimpan ke Firestore, +10 XP per level)
-- [x] Tahap 6 — Latihan interaktif (`latihan.html`, checklist tersimpan)
+- [x] Tahap 5 — Checklist + progress per materi (tersimpan ke Firestore, +10 XP per level), lengkap dengan tombol "Lanjut ke Level Berikutnya"
+- [x] Tahap 6 — Latihan interaktif otomatis: dikerjakan langsung lewat widget canvas (`latihan-canvas.js`), status "Selesai" terdeteksi otomatis tanpa centang/upload manual
 - [x] Tahap 7 — Materi membuat komik (Level 1–13, `materi.html?jenis=komik`)
 - [x] Tahap 8 — Komik Studio: editor canvas sederhana (brush, eraser, teks, balon, undo/redo)
 - [x] Tahap 9 — Penyimpanan karya ke Firestore (`users/{uid}/karya`), badge otomatis

@@ -112,12 +112,35 @@ if (!level) {
       });
       checklistArea.hidden = true;
       doneMsg.hidden = false;
+      siapkanTombolLanjut();
     } catch (err) {
       console.error("Gagal menyimpan progress:", err);
       btnSelesai.disabled = false;
       btnSelesai.textContent = "Materi Selesai 🎉";
     }
   });
+
+  // Tombol "Lanjut ke Level Berikutnya" — otomatis arahkan ke level
+  // sesudahnya di jenis yang sama. Kalau ini level terakhir CSP,
+  // arahkan ke Belajar Komik. Kalau ini level terakhir Komik,
+  // arahkan kembali ke dasbor (seluruh materi sudah selesai).
+  function siapkanTombolLanjut() {
+    const idxSekarang = LEVELS.findIndex((l) => l.id === level.id);
+    const levelBerikutnya = LEVELS[idxSekarang + 1];
+    const btnLanjut = document.getElementById("btn-lanjut-level");
+    if (!btnLanjut) return;
+
+    if (levelBerikutnya) {
+      btnLanjut.textContent = `Lanjut ke ${levelBerikutnya.ikon} ${levelBerikutnya.judul} →`;
+      btnLanjut.href = `materi-detail.html?jenis=${jenis}&id=${levelBerikutnya.id}`;
+    } else if (jenis === "csp") {
+      btnLanjut.textContent = "Semua materi CSP selesai! Lanjut ke Belajar Komik →";
+      btnLanjut.href = "materi.html?jenis=komik";
+    } else {
+      btnLanjut.textContent = "Semua materi selesai! Kembali ke Dasbor 🎉";
+      btnLanjut.href = "dashboard.html";
+    }
+  }
 }
 
 onAuthStateChanged(auth, (user) => {

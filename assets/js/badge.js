@@ -11,7 +11,6 @@ const listEl = document.getElementById("badge-list");
 const loadingEl = document.getElementById("badge-loading");
 const xpEl = document.getElementById("badge-xp");
 const TOTAL_LATIHAN = LATIHAN_CSP.length + LATIHAN_KOMIK.length;
-
 function daftarBadge(csp, komik, jumlahKarya, jumlahLatihan) {
   return [
     { ikon: "🏅", nama: "Kenal Clip Studio Paint", didapat: csp.includes(1) },
@@ -36,7 +35,8 @@ onAuthStateChanged(auth, async (user) => {
     const komik = data.progress?.komik || [];
 
     const karyaSnap = await getDocs(collection(db, "users", user.uid, "karya"));
-    const jumlahLatihan = (data.latihanSelesai || []).length;
+    const latihanSnap = await getDocs(collection(db, "users", user.uid, "latihanHasil"));
+    const jumlahLatihan = latihanSnap.size;
 
     if (xpEl) xpEl.textContent = `${data.xp || 0} XP`;
 
