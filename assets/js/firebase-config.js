@@ -17,13 +17,12 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAwABtavcBrSTYRL9mlmHM01z_fbz2wkiA",
-  authDomain: "officecraft-studio.firebaseapp.com",
-  projectId: "officecraft-studio",
-  storageBucket: "officecraft-studio.firebasestorage.app",
-  messagingSenderId: "625737188043",
-  appId: "1:625737188043:web:acea90962a0964a5eb514e",
-  measurementId: "G-5TGEYWHVC3"
+  apiKey: "ISI_DENGAN_API_KEY",
+  authDomain: "ISI_DENGAN_AUTH_DOMAIN",
+  projectId: "ISI_DENGAN_PROJECT_ID",
+  storageBucket: "ISI_DENGAN_STORAGE_BUCKET",
+  messagingSenderId: "ISI_DENGAN_SENDER_ID",
+  appId: "ISI_DENGAN_APP_ID"
 };
 
 export const app = initializeApp(firebaseConfig);

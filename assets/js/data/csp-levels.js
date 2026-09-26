@@ -66,11 +66,11 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level1-menu-bantuan.png"
       }
     ],
-    checklist: [
-      "Saya tahu apa itu Clip Studio Paint dan untuk apa aplikasi ini dipakai",
-      "Saya bisa menyebutkan 10 menu di Menu Bar CSP",
-      "Saya bisa menunjukkan Toolbar, Canvas, Layer Panel, dan Color Panel di layar",
-      "Saya tahu cara memunculkan panel yang hilang lewat menu Jendela"
+    kuis: [
+      { pertanyaan: "Clip Studio Paint itu aplikasi untuk apa?", pilihan: ["Menggambar digital & membuat komik", "Mengedit video", "Mengetik dokumen"], benar: 0 },
+      { pertanyaan: "Screenshot ini menunjukkan apa?", gambar: "assets/img/materi-csp/level1-tampilan-utama.png", pilihan: ["Tampilan utama CSP saat membuka file", "Jendela pengaturan printer", "Halaman login akun"], benar: 0 },
+      { pertanyaan: "Ada berapa menu utama di Menu Bar CSP?", pilihan: ["10", "5", "3"], benar: 0 },
+      { pertanyaan: "Kalau sebuah panel (misalnya Layer) tidak sengaja hilang dari layar, cara memunculkannya lagi lewat menu apa?", gambar: "assets/img/materi-csp/level1-menu-jendela.png", pilihan: ["Jendela(W)", "Filter", "Bantuan(H)"], benar: 0 }
     ]
   },
   {
@@ -102,11 +102,11 @@ export const CSP_LEVELS = [
         pahami: "Setelah semua pengaturan sesuai, klik tombol Create (atau OK) di pojok jendela. Canvas baru yang masih kosong akan langsung terbuka dan siap digambar. Kalau ternyata ukurannya salah, kamu masih bisa mengubahnya lewat Edit > Ubah Ukuran Kanvas."
       }
     ],
-    checklist: [
-      "Saya bisa membuka CLIP STUDIO PAINT dari launcher CLIP STUDIO START",
-      "Saya bisa membuka jendela Baru lewat File > Baru(N)",
-      "Saya tahu cara mengisi ukuran (Width, Height) dan resolusi canvas",
-      "Saya bisa membuat canvas baru dari awal sampai selesai"
+    kuis: [
+      { pertanyaan: "Gambar ini menunjukkan apa?", gambar: "assets/img/materi-csp/level2-langkah1.png", pilihan: ["Launcher CLIP STUDIO START", "Jendela menyimpan file", "Toolbar menggambar"], benar: 0 },
+      { pertanyaan: "Untuk membuat file baru, klik menu File lalu pilih...", gambar: "assets/img/materi-csp/level2-langkah2.png", pilihan: ["Baru(N)", "Cetak(P)", "Tutup(C)"], benar: 0 },
+      { pertanyaan: "Kalau ukuran canvas ternyata salah setelah dibuat, cara memperbaikinya lewat...", pilihan: ["Edit > Ubah Ukuran Kanvas", "Menghapus file dan mulai dari nol", "Tidak bisa diubah lagi"], benar: 0 },
+      { pertanyaan: "Untuk komik strip yang hanya dilihat di layar (bukan dicetak), resolusi berapa yang disarankan?", pilihan: ["72–150 dpi", "3000 dpi", "1 dpi"], benar: 0 }
     ]
   },
   {
@@ -164,13 +164,12 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level3-bentuk.png"
       }
     ],
-    checklist: [
-      "Saya bisa membedakan Pena (garis tegas) dan Pensil/Sketsa (tekstur kasar)",
-      "Saya tahu ada beberapa jenis Penghapus dan kapan memakai masing-masing",
-      "Saya bisa membuat seleksi dengan berbagai bentuk (Laso, Persegi panjang, Elips)",
-      "Saya tahu Pilih Otomatis dipakai untuk menyeleksi berdasarkan warna",
-      "Saya bisa memindahkan dan memutar objek dengan Move/Transformasi",
-      "Saya tahu tool Bentuk dipakai untuk garis/lingkaran/kotak yang rapi"
+    kuis: [
+      { pertanyaan: "Sub-Tool Pena mana yang paling umum dipakai untuk line art bersih?", gambar: "assets/img/materi-csp/level3-pena.png", pilihan: ["G-pen", "Kapur tulis", "Airbrush"], benar: 0 },
+      { pertanyaan: "Jenis Penghapus yang cocok dipakai untuk kebutuhan sehari-hari (menghapus bersih)?", gambar: "assets/img/materi-csp/level3-penghapus.png", pilihan: ["Tegas", "Multi-layer", "Vektor"], benar: 0 },
+      { pertanyaan: "Tool ini (Pilih Otomatis) menyeleksi area berdasarkan apa?", gambar: "assets/img/materi-csp/level3-pilih-otomatis.png", pilihan: ["Kemiripan warna", "Bentuk kotak saja", "Nama layer"], benar: 0 },
+      { pertanyaan: "Tool yang dipakai untuk memperbesar/memutar objek yang sudah diseleksi disebut?", pilihan: ["Transformasi", "Fill", "Eyedropper"], benar: 0 },
+      { pertanyaan: "Tool 'Gambar langsung' ini berguna untuk membuat apa?", gambar: "assets/img/materi-csp/level3-bentuk.png", pilihan: ["Bentuk rapi seperti garis lurus, elips, dan poligon", "Menghapus banyak layer sekaligus", "Mengganti warna background"], benar: 0 }
     ]
   },
   {
@@ -203,11 +202,11 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level4-operasi-objek.png"
       }
     ],
-    checklist: [
-      "Saya bisa membuat layer baru lewat Layer > Layer Raster Baru",
-      "Saya bisa menghapus dan menggabungkan layer",
-      "Saya bisa mengubah nama dan urutan layer",
-      "Saya bisa memakai hide/show dan mengatur opacity layer"
+    kuis: [
+      { pertanyaan: "Di contoh screenshot ini, layer paling bawah bernama apa?", gambar: "assets/img/materi-csp/level4-layer-panel.png", pilihan: ["Kertas", "Layer 1", "Background"], benar: 0 },
+      { pertanyaan: "Perintah membuat layer gambar baru ada di menu Layer, namanya?", gambar: "assets/img/materi-csp/level4-menu-layer.png", pilihan: ["Layer Raster Baru", "Hapus Layer", "Duplikasikan Layer"], benar: 0 },
+      { pertanyaan: "Untuk menyembunyikan sebuah layer tanpa menghapusnya, kamu klik ikon apa di sampingnya?", pilihan: ["Ikon mata", "Ikon gembok", "Ikon tempat sampah"], benar: 0 },
+      { pertanyaan: "Kalau ingin dua layer digabung jadi satu, perintahnya di menu Layer adalah?", pilihan: ["Gabungkan dengan layer di bawah ini", "Layer Raster Baru", "Hapus Layer"], benar: 0 }
     ]
   },
   {
@@ -246,10 +245,10 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level5-liquify.png"
       }
     ],
-    checklist: [
-      "Saya bisa menggambar garis, lingkaran, dan kotak dengan cukup rapi",
-      "Saya bisa menyusun bentuk dasar menjadi bentuk kepala dan wajah",
-      "Saya bisa menggambar karakter sederhana secara utuh"
+    kuis: [
+      { pertanyaan: "Bentuk dasar apa yang cocok jadi awal menggambar kepala karakter?", pilihan: ["Lingkaran", "Kotak", "Segitiga siku-siku"], benar: 0 },
+      { pertanyaan: "Kenapa garis bantu (sketsa kepala/wajah) sebaiknya digambar di layer terpisah dengan opacity rendah?", pilihan: ["Supaya mudah diredupkan tanpa mengganggu line art di atasnya", "Supaya ukuran file jadi lebih kecil", "Supaya warnanya otomatis berubah"], benar: 0 },
+      { pertanyaan: "Tool Liquify ini berguna untuk apa?", gambar: "assets/img/materi-csp/level5-liquify.png", pilihan: ["Mengoreksi proporsi gambar tanpa menghapus ulang", "Mewarnai otomatis", "Membuat balon dialog"], benar: 0 }
     ]
   },
   {
@@ -276,10 +275,10 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level6-koreksi-garis.png"
       }
     ],
-    checklist: [
-      "Saya bisa menyiapkan layer line art terpisah dari sketsa",
-      "Saya tahu Pena lebih cocok untuk line art dibanding Pensil",
-      "Saya bisa membuat outline karakter dengan garis yang cukup rapi"
+    kuis: [
+      { pertanyaan: "Kenapa layer line art sebaiknya dipisah dari layer sketsa?", pilihan: ["Supaya sketsa bisa diredupkan (opacity rendah) tanpa mengganggu garis akhir", "Supaya ukuran canvas berubah otomatis", "Karena CSP mengharuskan begitu"], benar: 0 },
+      { pertanyaan: "Untuk line art, tool mana yang lebih cocok dibanding Pensil?", pilihan: ["Pena (G-pen)", "Airbrush", "Balon"], benar: 0 },
+      { pertanyaan: "Tool Koreksi Garis dipakai untuk memperbaiki garis jenis apa?", gambar: "assets/img/materi-csp/level6-koreksi-garis.png", pilihan: ["Garis vektor", "Garis raster/bitmap saja", "Garis Filter"], benar: 0 }
     ]
   },
   {
@@ -321,12 +320,12 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level7-eyedropper.png"
       }
     ],
-    checklist: [
-      "Saya bisa memilih warna lewat Roda Warna",
-      "Saya bisa mewarnai karakter dengan Fill tanpa warna bocor",
-      "Saya tahu Cat Air dan Airbrush bisa dipakai untuk shading natural",
-      "Saya tahu fungsi tool Campur untuk menghaluskan tepi warna",
-      "Saya tahu cara pakai Eyedropper untuk menjaga warna tetap konsisten"
+    kuis: [
+      { pertanyaan: "Warna dipilih lewat panel apa?", pilihan: ["Roda Warna (Color Panel)", "Layer Panel", "Navigator"], benar: 0 },
+      { pertanyaan: "Pengaturan apa pada Fill yang membantu mencegah warna bocor walau ada celah kecil di garis?", gambar: "assets/img/materi-csp/level7-fill-detail.png", pilihan: ["Tutup celah", "Opasitas", "Stabilisasi"], benar: 0 },
+      { pertanyaan: "Mode blending apa yang terlihat dipakai di kuas Cat Air ini, yang juga sering dipakai untuk shading?", gambar: "assets/img/materi-csp/level7-catair.png", pilihan: ["Perbanyak (Multiply)", "Normal", "Terang"], benar: 0 },
+      { pertanyaan: "Tool Eyedropper berguna untuk apa?", gambar: "assets/img/materi-csp/level7-eyedropper.png", pilihan: ["Mengambil/mencontek warna yang sudah ada di gambar", "Menghapus warna", "Menggabungkan dua layer"], benar: 0 },
+      { pertanyaan: "Tool Campur (Blend) dipakai untuk apa?", pilihan: ["Menghaluskan pertemuan dua warna", "Membuat teks", "Mengubah ukuran canvas"], benar: 0 }
     ]
   },
   {
@@ -358,9 +357,10 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level8-efek-dekoratif.png"
       }
     ],
-    checklist: [
-      "Saya tahu cara memecah background jadi bentuk-bentuk sederhana",
-      "Saya bisa membuat satu background sederhana (bebas pilih temanya)"
+    kuis: [
+      { pertanyaan: "Background rumit sebenarnya tersusun dari apa?", pilihan: ["Bentuk-bentuk sederhana seperti kotak, garis, dan lingkaran", "Hanya dari foto", "Hanya dari warna hitam putih"], benar: 0 },
+      { pertanyaan: "Preset Gradasi ini paling cocok dipakai untuk membuat apa?", gambar: "assets/img/materi-csp/level8-gradasi.png", pilihan: ["Langit", "Lantai kayu", "Rambut karakter"], benar: 0 },
+      { pertanyaan: "Sub-Tool Efek dekoratif ini (Kelap-kelip, Glitter, dst.) cocok dipakai untuk apa?", gambar: "assets/img/materi-csp/level8-efek-dekoratif.png", pilihan: ["Menambah detail dekoratif di background", "Menghapus background", "Membuat balon dialog"], benar: 0 }
     ]
   },
   {
@@ -384,10 +384,10 @@ export const CSP_LEVELS = [
         pahami: "Letakkan balon dialog di area yang tidak menutupi bagian penting gambar (seperti wajah karakter). Contoh: karakter berkata \"Halo!\" — balon diletakkan di dekat mulut karakter dengan ekor mengarah ke sana."
       }
     ],
-    checklist: [
-      "Saya bisa membuat teks dengan Text Tool dan mengatur ukurannya",
-      "Saya bisa membuat balon dialog memakai tool Balon (bukan gambar manual)",
-      "Saya bisa menempatkan balon dialog di posisi yang pas"
+    kuis: [
+      { pertanyaan: "Font default yang terlihat di contoh Properti Tool Teks ini adalah?", gambar: "assets/img/materi-csp/level9-teks.png", pilihan: ["Tahoma Regular", "Times New Roman", "Comic Sans"], benar: 0 },
+      { pertanyaan: "Untuk membuat balon dialog di CSP, sebaiknya pakai apa?", gambar: "assets/img/materi-csp/level9-balon.png", pilihan: ["Tool Balon siap pakai", "Menggambar oval manual dari nol", "Tool Layer"], benar: 0 },
+      { pertanyaan: "Balon dialog sebaiknya diletakkan di posisi yang...", pilihan: ["Tidak menutupi bagian penting gambar seperti wajah karakter", "Selalu di tengah panel", "Selalu di pojok kanan atas"], benar: 0 }
     ]
   },
   {
@@ -421,11 +421,11 @@ export const CSP_LEVELS = [
         gambar: "assets/img/materi-csp/level10-menu-animasi.png"
       }
     ],
-    checklist: [
-      "Saya tahu fungsi Panel dan Frame Border",
-      "Saya tahu Penggaris bisa membantu membuat garis presisi/perspektif",
-      "Saya tahu menu Cerita dipakai untuk komik banyak halaman",
-      "Saya tahu menu Filter bisa dipakai untuk efek tambahan"
+    kuis: [
+      { pertanyaan: "Panel dalam komik berfungsi sebagai apa?", pilihan: ["Kotak yang membatasi satu adegan", "Warna latar belakang", "Jenis brush"], benar: 0 },
+      { pertanyaan: "Penggaris jenis apa yang cocok dipakai untuk menggambar ruangan dengan titik hilang (vanishing point)?", gambar: "assets/img/materi-csp/level10-penggaris.png", pilihan: ["Penggaris perspektif", "Penggaris simetris", "Penggaris linier"], benar: 0 },
+      { pertanyaan: "Menu Cerita paling berguna untuk komik seperti apa?", gambar: "assets/img/materi-csp/level10-menu-cerita.png", pilihan: ["Komik dengan banyak halaman", "Komik satu panel saja", "Komik tanpa dialog"], benar: 0 },
+      { pertanyaan: "Menu Filter di CSP dipakai untuk apa?", pilihan: ["Menambahkan efek seperti blur/distorsi", "Menyimpan file", "Membuat layer baru"], benar: 0 }
     ]
   },
   {
@@ -451,9 +451,9 @@ export const CSP_LEVELS = [
         pahami: "Susun dalam grid 2x2 atau empat baris sejajar. Pola 4 panel sangat umum untuk komik strip lucu: perkenalan — pengembangan — kejutan/masalah — lelucon/penutup."
       }
     ],
-    checklist: [
-      "Saya bisa menyusun panel komik dari 1 sampai 4 panel",
-      "Saya paham jumlah dan urutan panel memengaruhi cara cerita dibaca"
+    kuis: [
+      { pertanyaan: "Pola 4 panel yang umum dipakai di komik strip lucu biasanya mengikuti urutan apa?", pilihan: ["Perkenalan - pengembangan - kejutan - lelucon/penutup", "Warna - garis - teks - background", "Selalu acak tanpa urutan"], benar: 0 },
+      { pertanyaan: "Untuk menunjukkan 'sebelum dan sesudah' dalam cerita, jumlah panel yang paling pas biasanya?", pilihan: ["2 panel", "10 panel", "1 panel"], benar: 0 }
     ]
   },
   {
@@ -475,9 +475,9 @@ export const CSP_LEVELS = [
         pahami: "Kerjakan berurutan: (1) sketsa kasar (Pensil) tiap panel, (2) line art (Pena), (3) warna dasar (Fill), (4) background sederhana, (5) balon dialog dan teks, (6) cek ulang sebelum disimpan."
       }
     ],
-    checklist: [
-      "Saya berhasil membuat komik 2 panel pertama saya dari sketsa sampai selesai",
-      "Saya sudah memakai karakter, background, panel, dan dialog dalam satu karya"
+    kuis: [
+      { pertanyaan: "Pada contoh tema 'Pensilku Hilang', apa yang terjadi di Panel 2?", pilihan: ["Karakter lega karena pensilnya ketemu di meja", "Karakter menangis", "Karakter pergi ke sekolah"], benar: 0 },
+      { pertanyaan: "Urutan pengerjaan komik yang disarankan dimulai dari?", pilihan: ["Sketsa kasar, baru line art", "Warna dulu, baru sketsa", "Balon dialog dulu, baru karakter"], benar: 0 }
     ]
   }
 ];

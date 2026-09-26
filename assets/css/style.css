@@ -386,6 +386,87 @@ a.btn:focus-visible {
   color: var(--ink-soft);
 }
 
+/* ---------- Zoom gambar materi (hover-magnify) ---------- */
+.zoom-wrap {
+  overflow: hidden;
+  border: 3px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  cursor: zoom-in;
+  position: relative;
+  background: #fff;
+}
+.zoom-wrap img {
+  display: block;
+  width: 100%;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+}
+.zoom-wrap.zoomed img {
+  transform: scale(2.4);
+}
+.zoom-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  background: rgba(28, 27, 25, 0.75);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+@media (hover: none) {
+  .zoom-wrap { cursor: default; }
+  .zoom-hint { display: none; }
+}
+
+/* ---------- Kuis akhir materi (ganti checklist) ---------- */
+.kuis-card {
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: var(--paper);
+}
+.kuis-card.terjawab {
+  border-color: var(--blue);
+  background: #E3EEF6;
+}
+.kuis-pertanyaan {
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+.kuis-opsi {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  margin-top: 8px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.kuis-opsi:hover:not([disabled]) {
+  background: var(--paper-alt);
+}
+.kuis-opsi.benar {
+  background: #DFF3E1;
+  border-color: #2E7D32;
+  font-weight: 700;
+}
+.kuis-opsi.salah {
+  background: #FCE7E3;
+  border-color: var(--red-dark);
+}
+.kuis-opsi[disabled] {
+  cursor: default;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;

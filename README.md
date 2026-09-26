@@ -15,7 +15,7 @@ komik-strip-studio/
 ├── register.html            # Pendaftaran
 ├── dashboard.html           # Dasbor peserta didik
 ├── materi.html               # Daftar materi (CSP / Komik, lewat ?jenis=)
-├── materi-detail.html        # Materi step-by-step + checklist
+├── materi-detail.html        # Materi step-by-step + kuis pilihan ganda
 ├── latihan.html               # Latihan interaktif otomatis (widget canvas)
 ├── komik-studio.html          # Editor komik sederhana (canvas)
 ├── komik-saya.html            # Portofolio karya
@@ -30,7 +30,7 @@ komik-strip-studio/
 │   │   ├── auth.js            # Login, register, logout (sistem username)
 │   │   ├── dashboard.js       # Data dasbor (progress, XP, next step)
 │   │   ├── materi.js          # Daftar level materi + status kunci
-│   │   ├── materi-detail.js   # Stepper + checklist + simpan progress
+│   │   ├── materi-detail.js   # Stepper (dgn zoom gambar) + kuis + simpan progress
 │   │   ├── latihan.js         # Kartu latihan + koneksi ke widget interaktif
 │   │   ├── latihan-canvas.js  # Widget latihan interaktif (draw/erase/color-fill/text/manipulate/layer-sim)
 │   │   ├── studio.js          # Editor canvas + simpan karya
@@ -51,6 +51,42 @@ Isi tiap level di `csp-levels.js` dan `komik-levels.js` masih **versi ringkas**
 screenshot software sungguhan). Struktur datanya sengaja dibuat sederhana
 (array of object) supaya kamu bisa mengedit kontennya tanpa menyentuh kode
 HTML/JS lain.
+
+### Kuis akhir materi (pengganti checklist)
+
+Setiap level sekarang diakhiri kuis pilihan ganda, bukan checklist manual.
+Formatnya ada di field `kuis` (menggantikan `checklist` yang lama) di
+`csp-levels.js` / `komik-levels.js`:
+
+```js
+kuis: [
+  {
+    pertanyaan: "Sub-Tool Pena mana yang paling umum dipakai untuk line art bersih?",
+    gambar: "assets/img/materi-csp/level3-pena.png", // opsional
+    pilihan: ["G-pen", "Kapur tulis", "Airbrush"],
+    benar: 0 // index jawaban benar di array pilihan
+  }
+]
+```
+
+- `gambar` bersifat opsional — bisa dihilangkan untuk soal teks biasa.
+- Urutan `pilihan` diacak otomatis tiap kali dibuka, jadi tidak perlu
+  dipusingkan urutan penulisan di data.
+- Begitu peserta didik memilih jawaban benar, soal itu otomatis
+  "tercentang" (hijau, tombolnya terkunci). Begitu SEMUA soal di level
+  itu terjawab benar, progres & XP otomatis tersimpan tanpa tombol
+  konfirmasi tambahan.
+- Jawaban salah tidak menghukum apa pun — cuma kedip merah sebentar,
+  peserta didik boleh coba lagi sampai benar.
+
+### Zoom gambar materi
+
+Semua gambar di halaman materi (`materi-detail.html`) sekarang otomatis
+membesar mengikuti posisi kursor saat dihover — berguna untuk screenshot
+menu/tool yang detailnya kecil. Tidak perlu pengaturan tambahan; ini
+otomatis aktif untuk setiap gambar yang dipasang lewat field `gambar`
+(baik di `langkah` maupun di `kuis`). Di perangkat sentuh (HP/tablet)
+efek zoom ini otomatis nonaktif karena tidak ada konsep "hover".
 
 ### Cara menambahkan screenshot ke materi
 
@@ -173,7 +209,7 @@ manual di Firestore Console menjadi `"guru"`.
 - [x] Tahap 2 — Dasbor lengkap (progress asli, XP, "perjalanan belajar" dinamis)
 - [x] Tahap 3 — Sistem materi Clip Studio Paint (Level 1–12, `materi.html?jenis=csp`)
 - [x] Tahap 4 — Tutorial step-by-step (`materi-detail.html`, tombol Sebelumnya/Lanjut)
-- [x] Tahap 5 — Checklist + progress per materi (tersimpan ke Firestore, +10 XP per level), lengkap dengan tombol "Lanjut ke Level Berikutnya"
+- [x] Tahap 5 — Kuis pilihan ganda otomatis di akhir tiap materi (bukan checklist manual lagi — jawaban benar langsung tercentang), progress+XP tersimpan otomatis begitu semua kuis benar, dilengkapi tombol "Lanjut ke Level Berikutnya"
 - [x] Tahap 6 — Latihan interaktif otomatis: dikerjakan langsung lewat widget canvas (`latihan-canvas.js`), status "Selesai" terdeteksi otomatis tanpa centang/upload manual
 - [x] Tahap 7 — Materi membuat komik (Level 1–13, `materi.html?jenis=komik`)
 - [x] Tahap 8 — Komik Studio: editor canvas sederhana (brush, eraser, teks, balon, undo/redo)

@@ -1,9 +1,17 @@
 // =========================================================
-// KOMIK STRIP STUDIO — Detail materi: step-by-step + checklist
+// KOMIK STRIP STUDIO — Detail materi: step-by-step + kuis akhir
+// =========================================================
+// Perubahan dari versi sebelumnya:
+// - Gambar step punya efek zoom mengikuti kursor (hover-magnify),
+//   supaya screenshot menu/tool yang kecil tetap kebaca jelas.
+// - Checklist manual diganti kuis pilihan ganda. Begitu jawaban
+//   benar dipilih, item itu otomatis "tercentang" (tidak perlu
+//   klik centang terpisah). Begitu SEMUA kuis di level itu benar,
+//   progres & XP otomatis tersimpan tanpa perlu klik tombol lagi.
 // =========================================================
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { doc, getDoc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { CSP_LEVELS } from "./data/csp-levels.js";
 import { KOMIK_LEVELS } from "./data/komik-levels.js";
 
@@ -24,12 +32,23 @@ const stepTitle = document.getElementById("step-title");
 const stepBody = document.getElementById("step-body");
 const btnPrev = document.getElementById("btn-prev");
 const btnNext = document.getElementById("btn-next");
-const checklistArea = document.getElementById("checklist-area");
-const checklistList = document.getElementById("checklist-list");
-const btnSelesai = document.getElementById("btn-selesai");
+const kuisArea = document.getElementById("kuis-area");
+const kuisList = document.getElementById("kuis-list");
 const doneMsg = document.getElementById("done-msg");
 
 if (backLink) backLink.href = backHref;
+
+// ---------- Zoom gambar mengikuti kursor ----------
+function pasangZoom(wrap, img) {
+  wrap.addEventListener("mouseenter", () => wrap.classList.add("zoomed"));
+  wrap.addEventListener("mouseleave", () => wrap.classList.remove("zoomed"));
+  wrap.addEventListener("mousemove", (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const px = ((e.clientX - rect.left) / rect.width) * 100;
+    const py = ((e.clientY - rect.top) / rect.height) * 100;
+    img.style.transformOrigin = `${px}% ${py}%`;
+  });
+}
 
 if (!level) {
   if (titleEl) titleEl.textContent = "Materi tidak ditemukan";
@@ -46,20 +65,24 @@ if (!level) {
     stepTitle.textContent = l.judul;
     stepBody.textContent = l.pahami;
 
-    // Gambar/screenshot opsional. Isi field "gambar" di file data
-    // (csp-levels.js / komik-levels.js) untuk menampilkannya di sini.
     stepImg.innerHTML = "";
     if (l.gambar) {
+      const wrap = document.createElement("div");
+      wrap.className = "zoom-wrap";
       const img = document.createElement("img");
       img.src = l.gambar;
       img.alt = l.judul;
       img.loading = "lazy";
-      img.style.cssText = "width:100%; border:3px solid var(--line); border-radius:10px; margin-bottom:16px; display:block;";
-      stepImg.appendChild(img);
+      const hint = document.createElement("span");
+      hint.className = "zoom-hint";
+      hint.textContent = "🔍 arahkan kursor untuk zoom";
+      wrap.append(img, hint);
+      stepImg.appendChild(wrap);
+      pasangZoom(wrap, img);
     }
 
     btnPrev.disabled = langkahAktif === 0;
-    btnNext.textContent = langkahAktif === totalLangkah - 1 ? "Lanjut ke checklist →" : "Lanjut →";
+    btnNext.textContent = langkahAktif === totalLangkah - 1 ? "Lanjut ke kuis →" : "Lanjut →";
   }
 
   btnPrev?.addEventListener("click", () => {
@@ -71,54 +94,91 @@ if (!level) {
       tampilkanLangkah();
     } else {
       stepArea.hidden = true;
-      checklistArea.hidden = false;
+      kuisArea.hidden = false;
     }
   });
 
   tampilkanLangkah();
 
-  // Checklist
-  if (checklistList) {
-    level.checklist.forEach((teks, i) => {
-      const li = document.createElement("li");
-      li.className = "journey";
-      li.style.padding = "0";
-      li.innerHTML = `
-        <label style="display:flex; align-items:center; gap:10px; padding:12px 14px; cursor:pointer;">
-          <input type="checkbox" data-idx="${i}" style="width:18px;height:18px;" />
-          <span>${teks}</span>
-        </label>`;
-      checklistList.appendChild(li);
+  // ---------- Kuis akhir (pengganti checklist) ----------
+  const soal = level.kuis || [];
+  const terjawabBenar = new Array(soal.length).fill(false);
+
+  function acakArray(arr) {
+    return arr.map((v, i) => [Math.random(), v, i]).sort((a, b) => a[0] - b[0]);
+  }
+
+  if (kuisList) {
+    soal.forEach((s, i) => {
+      const card = document.createElement("div");
+      card.className = "kuis-card";
+      card.id = `kuis-${i}`;
+
+      const gambarHtml = s.gambar
+        ? `<div class="zoom-wrap" id="kuis-img-wrap-${i}" style="max-width:360px;"><img src="${s.gambar}" alt="Gambar soal" loading="lazy" /><span class="zoom-hint">🔍 zoom</span></div>`
+        : "";
+
+      const pilihanUrut = acakArray(s.pilihan.map((teks, idx) => ({ teks, benar: idx === s.benar })));
+
+      card.innerHTML = `
+        <p class="kuis-pertanyaan">${i + 1}. ${s.pertanyaan}</p>
+        ${gambarHtml}
+        <div class="kuis-opsi-wrap"></div>
+      `;
+      const opsiWrap = card.querySelector(".kuis-opsi-wrap");
+      pilihanUrut.forEach(([, opsi]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "kuis-opsi";
+        btn.textContent = opsi.teks;
+        btn.addEventListener("click", () => jawab(i, opsi.benar, btn, card));
+        opsiWrap.appendChild(btn);
+      });
+
+      kuisList.appendChild(card);
+
+      if (s.gambar) {
+        const wrap = document.getElementById(`kuis-img-wrap-${i}`);
+        const img = wrap.querySelector("img");
+        pasangZoom(wrap, img);
+      }
     });
   }
 
-  function cekSemuaTercentang() {
-    const boxes = checklistList.querySelectorAll("input[type='checkbox']");
-    return [...boxes].every((b) => b.checked);
-  }
-  checklistList?.addEventListener("change", () => {
-    btnSelesai.disabled = !cekSemuaTercentang();
-  });
+  async function jawab(idx, benar, btn, card) {
+    if (terjawabBenar[idx]) return;
+    const semuaBtn = card.querySelectorAll(".kuis-opsi");
 
-  btnSelesai?.addEventListener("click", async () => {
+    if (benar) {
+      btn.classList.add("benar");
+      semuaBtn.forEach((b) => (b.disabled = true));
+      card.classList.add("terjawab");
+      terjawabBenar[idx] = true;
+
+      if (terjawabBenar.every(Boolean)) {
+        await selesaikanMateri();
+      }
+    } else {
+      btn.classList.add("salah");
+      setTimeout(() => btn.classList.remove("salah"), 500);
+    }
+  }
+
+  async function selesaikanMateri() {
     const user = auth.currentUser;
     if (!user) return;
-    btnSelesai.disabled = true;
-    btnSelesai.textContent = "Menyimpan…";
     try {
       await updateDoc(doc(db, "users", user.uid), {
         [`progress.${progressKey}`]: arrayUnion(level.id),
         xp: increment(10)
       });
-      checklistArea.hidden = true;
-      doneMsg.hidden = false;
-      siapkanTombolLanjut();
     } catch (err) {
       console.error("Gagal menyimpan progress:", err);
-      btnSelesai.disabled = false;
-      btnSelesai.textContent = "Materi Selesai 🎉";
     }
-  });
+    kuisArea.hidden = true;
+    doneMsg.hidden = false;
+    siapkanTombolLanjut();
+  }
 
   // Tombol "Lanjut ke Level Berikutnya" — otomatis arahkan ke level
   // sesudahnya di jenis yang sama. Kalau ini level terakhir CSP,
