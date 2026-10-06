@@ -17,9 +17,27 @@ const guruNavEl = document.getElementById("nav-guru");
 const loadingEl = document.getElementById("dash-loading");
 const contentEl = document.getElementById("dash-content");
 const journeyEl = document.getElementById("dash-journey");
+const proyekPanelEl = document.getElementById("dash-proyek-panel");
+const proyekBarEl = document.getElementById("dash-proyek-bar");
+const proyekValueEl = document.getElementById("dash-proyek-value");
+const proyekLinkEl = document.getElementById("dash-proyek-link");
 
 function levelBerikutnya(levels, selesai) {
   return levels.find((l) => !selesai.includes(l.id)) || null;
+}
+
+// Field proyekKomik yang berasal dari tugas Level 1-12 (Level 13 = Export,
+// bukan field tersendiri). Dipakai untuk menghitung progress proyek komik.
+const FIELD_PROYEK = ["ide", "karakter", "ekspresi", "alur", "storyboard", "jumlahPanel", "komposisi", "dialog", "lineArt", "warna", "background", "finishing"];
+
+function hitungFieldTerisi(proyek) {
+  if (!proyek) return 0;
+  return FIELD_PROYEK.filter((f) => {
+    const v = proyek[f];
+    if (!v) return false;
+    if (typeof v === "object") return Object.values(v).some((sub) => sub && String(sub).trim());
+    return String(v).trim().length > 0;
+  }).length;
 }
 
 onAuthStateChanged(auth, async (user) => {
@@ -43,6 +61,22 @@ onAuthStateChanged(auth, async (user) => {
       console.error("Gagal memuat jumlah latihan:", err);
     }
 
+    let jumlahKarya = 0;
+    try {
+      const karyaSnap = await getDocs(collection(db, "users", user.uid, "karya"));
+      jumlahKarya = karyaSnap.size;
+    } catch (err) {
+      console.error("Gagal memuat jumlah karya:", err);
+    }
+
+    let proyek = null;
+    try {
+      const proyekSnap = await getDoc(doc(db, "users", user.uid, "proyekKomik", "aktif"));
+      proyek = proyekSnap.exists() ? proyekSnap.data() : null;
+    } catch (err) {
+      console.error("Gagal memuat proyek komik:", err);
+    }
+
     if (helloEl) helloEl.textContent = `SELAMAT DATANG, ${nama.toUpperCase()}`;
     if (progressEl) progressEl.textContent = `${persenCsp}%`;
     if (progressBarEl) progressBarEl.style.width = `${persenCsp}%`;
@@ -57,6 +91,23 @@ onAuthStateChanged(auth, async (user) => {
       if (nextLinkEl) { nextLinkEl.href = "materi.html?jenis=komik"; nextLinkEl.textContent = "Belajar Komik →"; }
     }
 
+    // Progress Proyek Komik — cuma ditampilkan begitu peserta didik sudah
+    // mulai mengisi minimal satu tugas komik (proyek beneran ada isinya).
+    const jumlahTerisi = hitungFieldTerisi(proyek);
+    if (proyekPanelEl && jumlahTerisi > 0) {
+      const persenProyek = Math.round((jumlahTerisi / FIELD_PROYEK.length) * 100);
+      proyekPanelEl.hidden = false;
+      if (proyekBarEl) proyekBarEl.style.width = `${persenProyek}%`;
+      if (proyekValueEl) proyekValueEl.textContent = `${persenProyek}% (${jumlahTerisi}/${FIELD_PROYEK.length} bagian terisi)`;
+      const komikBerikutnya = levelBerikutnya(KOMIK_LEVELS, komik);
+      if (proyekLinkEl) {
+        proyekLinkEl.href = komikBerikutnya
+          ? `materi-detail.html?jenis=komik&id=${komikBerikutnya.id}`
+          : "komik-saya.html";
+        proyekLinkEl.textContent = komikBerikutnya ? `Lanjutkan: ${komikBerikutnya.judul} →` : "Lihat di Komik Saya →";
+      }
+    }
+
     if (journeyEl) {
       const cspDone = csp.length === CSP_LEVELS.length;
       const komikDone = komik.length === KOMIK_LEVELS.length;
@@ -64,9 +115,9 @@ onAuthStateChanged(auth, async (user) => {
         { label: "🎨 Clip Studio Paint", done: csp.length > 0, href: "materi.html?jenis=csp" },
         { label: "📚 Belajar Komik", done: komik.length > 0, href: "materi.html?jenis=komik" },
         { label: "✏️ Latihan", done: jumlahLatihan > 0, href: "latihan.html" },
-        { label: "🖌️ Komik Studio", done: false, href: "komik-studio.html" },
+        { label: "🖌️ Komik Studio", done: jumlahKarya > 0, href: "komik-studio.html" },
         { label: "🏆 Projek Akhir", done: cspDone && komikDone, href: "komik-studio.html" },
-        { label: "📁 Portofolio", done: false, href: "komik-saya.html" }
+        { label: "📁 Portofolio", done: jumlahKarya > 0, href: "komik-saya.html" }
       ];
       journeyEl.innerHTML = items.map((it) => `
         <li data-status="${it.done ? "done" : ""}">

@@ -63,6 +63,17 @@ service cloud.firestore {
       allow delete: if isOwner(userId);
     }
 
+    // Proyek Komik: hasil nyata tiap langkah "Belajar Komik" (ide
+    // cerita, karakter, sketsa, dst.) dikumpulkan di satu dokumen
+    // "aktif" per peserta didik, lalu digabung jadi karya utuh saat
+    // Export. Sama seperti karya/latihanHasil: hanya pemiliknya yang
+    // boleh membuat/mengubah, guru boleh membaca.
+    match /users/{userId}/proyekKomik/{proyekId} {
+      allow read: if isOwner(userId) || isGuru();
+      allow create, update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
     // Tutup semua koleksi lain secara default sampai
     // ditambahkan aturan spesifik di tahap berikutnya
     // (materi, latihan, komik, badge, dll).

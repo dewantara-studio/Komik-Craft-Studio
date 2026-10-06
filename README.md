@@ -15,7 +15,7 @@ komik-strip-studio/
 ├── register.html            # Pendaftaran
 ├── dashboard.html           # Dasbor peserta didik
 ├── materi.html               # Daftar materi (CSP / Komik, lewat ?jenis=)
-├── materi-detail.html        # Materi step-by-step + kuis pilihan ganda
+├── materi-detail.html        # Materi step-by-step + kuis (CSP) / tugas nyata (Komik)
 ├── latihan.html               # Latihan interaktif otomatis (widget canvas)
 ├── komik-studio.html          # Editor komik sederhana (canvas)
 ├── komik-saya.html            # Portofolio karya
@@ -30,7 +30,7 @@ komik-strip-studio/
 │   │   ├── auth.js            # Login, register, logout (sistem username)
 │   │   ├── dashboard.js       # Data dasbor (progress, XP, next step)
 │   │   ├── materi.js          # Daftar level materi + status kunci
-│   │   ├── materi-detail.js   # Stepper (dgn zoom gambar) + kuis + simpan progress
+│   │   ├── materi-detail.js   # Stepper (zoom gambar) + kuis CSP / tugas proyek Komik
 │   │   ├── latihan.js         # Kartu latihan + koneksi ke widget interaktif
 │   │   ├── latihan-canvas.js  # Widget latihan interaktif (draw/erase/color-fill/text/manipulate/layer-sim)
 │   │   ├── studio.js          # Editor canvas + simpan karya
@@ -52,7 +52,47 @@ screenshot software sungguhan). Struktur datanya sengaja dibuat sederhana
 (array of object) supaya kamu bisa mengedit kontennya tanpa menyentuh kode
 HTML/JS lain.
 
-### Kuis akhir materi (pengganti checklist)
+### Belajar Komik = Proyek Nyata (bukan cuma kuis)
+
+Berbeda dari Belajar Clip Studio Paint (yang diakhiri kuis pilihan
+ganda), tiap level **Belajar Komik** diakhiri **tugas nyata** yang
+hasilnya langsung jadi bagian dari komik yang sedang dibuat peserta
+didik — bukan latihan terpisah yang dibuang setelah selesai.
+
+Semua hasil disimpan ke satu dokumen per peserta didik:
+`users/{uid}/proyekKomik/aktif`. Field-nya sesuai `tugas.field` di
+tiap level `komik-levels.js`:
+
+| Level | Tugas | Field di proyekKomik |
+|---|---|---|
+| 1. Ide Cerita | Tulis ide cerita | `ide` |
+| 2. Membuat Karakter | Deskripsikan karakter | `karakter` |
+| 3. Ekspresi Karakter | Gambar 1 ekspresi | `ekspresi` |
+| 4. Alur Cerita | Isi Awal/Tengah/Akhir | `alur` |
+| 5. Storyboard | Sketsa kasar | `storyboard` |
+| 6. Panel | Pilih jumlah panel | `jumlahPanel` |
+| 7. Komposisi | Gambar tata letak | `komposisi` |
+| 8. Dialog | Tulis dialog | `dialog` |
+| 9. Line Art | Gambar garis akhir | `lineArt` |
+| 10. Warna | Gambar berwarna | `warna` |
+| 11. Background | Gambar latar | `background` |
+| 12. Finishing | Gambar versi akhir | `finishing` |
+| 13. Export | — (menggabung semua) | — |
+
+Di **Level 13 (Export)**, semua field ini ditampilkan sebagai
+ringkasan, lalu gambar terakhir yang ada (diprioritaskan dari
+`finishing`, baru `background`, `lineArt`, dst.) disimpan sebagai
+karya utuh ke `users/{uid}/karya` — otomatis muncul di halaman
+**Komik Saya** dengan judul dari `ide` dan status "selesai".
+
+Jenis tugas (`tugas.mode`) yang didukung: `text` (satu kotak teks),
+`text-multi` (beberapa kotak teks berlabel), `pilihan` (pilih satu
+opsi, auto-tersimpan begitu diklik), dan `draw` (menggambar di
+canvas — pakai widget yang sama dengan Latihan, auto-terdeteksi
+selesai). Untuk mengubah task tiap level, edit field `tugas` di
+`komik-levels.js`.
+
+### Kuis akhir materi (pengganti checklist, khusus Belajar CSP)
 
 Setiap level sekarang diakhiri kuis pilihan ganda, bukan checklist manual.
 Formatnya ada di field `kuis` (menggantikan `checklist` yang lama) di
@@ -211,7 +251,7 @@ manual di Firestore Console menjadi `"guru"`.
 - [x] Tahap 4 — Tutorial step-by-step (`materi-detail.html`, tombol Sebelumnya/Lanjut)
 - [x] Tahap 5 — Kuis pilihan ganda otomatis di akhir tiap materi (bukan checklist manual lagi — jawaban benar langsung tercentang), progress+XP tersimpan otomatis begitu semua kuis benar, dilengkapi tombol "Lanjut ke Level Berikutnya"
 - [x] Tahap 6 — Latihan interaktif otomatis: dikerjakan langsung lewat widget canvas (`latihan-canvas.js`), status "Selesai" terdeteksi otomatis tanpa centang/upload manual
-- [x] Tahap 7 — Materi membuat komik (Level 1–13, `materi.html?jenis=komik`)
+- [x] Tahap 7 — Materi membuat komik (Level 1–13, `materi.html?jenis=komik`) — SEKARANG BERBASIS PROYEK NYATA: tiap level menghasilkan bagian sungguhan komikmu (ide, karakter, alur, gambar), bukan cuma teori
 - [x] Tahap 8 — Komik Studio: editor canvas sederhana (brush, eraser, teks, balon, undo/redo)
 - [x] Tahap 9 — Penyimpanan karya ke Firestore (`users/{uid}/karya`), badge otomatis
 - [x] Tahap 10 — Portofolio "Komik Saya" (lihat & hapus karya)
