@@ -17,13 +17,13 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAwABtavcBrSTYRL9mlmHM01z_fbz2wkiA",
-  authDomain: "officecraft-studio.firebaseapp.com",
-  projectId: "officecraft-studio",
-  storageBucket: "officecraft-studio.firebasestorage.app",
-  messagingSenderId: "625737188043",
-  appId: "1:625737188043:web:acea90962a0964a5eb514e",
-  measurementId: "G-5TGEYWHVC3"
+  apiKey: "AIzaSyCoL8wuF5Up1iik7AE0DQ0cUpv3x90cZ80",
+  authDomain: "komik-craft-studio.firebaseapp.com",
+  projectId: "komik-craft-studio",
+  storageBucket: "komik-craft-studio.firebasestorage.app",
+  messagingSenderId: "403188204371",
+  appId: "1:403188204371:web:2f1cea519e0f5cc66817a6",
+  measurementId: "G-K0KCK57ZY7"
 };
 
 export const app = initializeApp(firebaseConfig);
