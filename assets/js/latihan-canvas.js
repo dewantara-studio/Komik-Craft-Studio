@@ -32,8 +32,14 @@ function hitungCakupanTinta(ctx, w, h) {
   const totalPiksel = w * h;
   // Sample tiap 4 piksel biar tidak berat
   for (let i = 0; i < data.length; i += 16) {
-    // Piksel dianggap "terisi" kalau bukan putih polos (ada tinta di sana)
-    if (data[i] < 245 || data[i + 1] < 245 || data[i + 2] < 245) terisi++;
+    const alpha = data[i + 3];
+    // PENTING: piksel yang sudah dihapus Eraser jadi transparan (alpha=0)
+    // dan warnanya otomatis jadi (0,0,0) — kalau cuma ngecek warna tanpa
+    // ngecek alpha, piksel transparan itu salah kena anggap "ada tinta
+    // hitam" padahal justru sudah terhapus. Makanya alpha WAJIB dicek:
+    // piksel dianggap "terisi" hanya kalau tidak transparan (alpha > 10)
+    // DAN warnanya bukan putih polos.
+    if (alpha > 10 && (data[i] < 245 || data[i + 1] < 245 || data[i + 2] < 245)) terisi++;
   }
   return terisi / (totalPiksel / 4);
 }
@@ -63,7 +69,10 @@ function gambarPanelGuide(ctx, w, h, count) {
 function modeDraw(container, config, selesai) {
   const W = 420, H = 300;
   const canvas = buatCanvas(W, H);
-  const ctx = canvas.getContext("2d");
+  // willReadFrequently: true -> canvas ini sering dibaca ulang lewat
+  // getImageData() (buat ngecek seberapa penuh area tergambar), jadi
+  // browser dikasih tahu dari awal supaya nggak lag/warning di console.
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
   if (config.panelCount) gambarPanelGuide(ctx, W, H, config.panelCount);
   else { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H); }
 
@@ -113,7 +122,7 @@ function modeDraw(container, config, selesai) {
 function modeErase(container, config, selesai) {
   const W = 420, H = 300;
   const canvas = buatCanvas(W, H);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
   ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#E8402C";
   ctx.beginPath();

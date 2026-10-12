@@ -13,7 +13,10 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.0/f
 import { doc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const canvas = document.getElementById("studio-canvas");
-const ctx = canvas?.getContext("2d");
+// willReadFrequently: true -> canvas ini sering dibaca ulang lewat
+// getImageData() untuk fitur Undo/Redo, jadi browser dikasih tahu dari
+// awal supaya nggak lag/warning di console.
+const ctx = canvas?.getContext("2d", { willReadFrequently: true });
 const panelSelect = document.getElementById("panel-count");
 const toolButtons = document.querySelectorAll("[data-tool]");
 const colorInput = document.getElementById("tool-color");
