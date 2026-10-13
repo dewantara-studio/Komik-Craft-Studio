@@ -73,8 +73,15 @@
           <button class="tool-btn" data-tool="eraser" type="button">🧽 Eraser</button>
           <button class="tool-btn" data-tool="text" type="button">🔤 Text</button>
           <button class="tool-btn" data-tool="balloon" type="button">💬 Balloon</button>
+          <button class="tool-btn" data-tool="select" type="button">🖱️ Pilih/Geser</button>
         </div>
         <canvas id="studio-canvas" width="800" height="600"></canvas>
+        <p class="field-hint" style="max-width:640px;">
+          <strong>Teks &amp; Balon:</strong> pilih tool Text/Balloon, klik kanvas untuk menaruhnya.
+          Seret untuk <strong>geser</strong>; seret kotak kuning di sisi kanan (lebar), bawah (tinggi),
+          atau sudut (keduanya) untuk <strong>mengubah ukuran</strong>. Klik dua kali atau pakai kotak
+          di samping untuk <strong>mengedit isi teks</strong> kapan saja.
+        </p>
       </div>
 
       <div class="studio-side panel">
@@ -99,6 +106,31 @@
           <button id="btn-undo" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">↩ Undo</button>
           <button id="btn-redo" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">↪ Redo</button>
           <button id="btn-clear" class="btn btn-secondary" type="button" style="width:auto; padding:10px 14px;">🗑</button>
+        </div>
+
+        <div id="obj-panel" hidden style="border:2px dashed var(--ink-soft); border-radius:10px; padding:12px; margin-bottom:18px;">
+          <p id="obj-judul" style="margin:0 0 10px; font-weight:700; font-size:0.9rem;">Objek terpilih</p>
+          <div class="field">
+            <label for="obj-text">Isi teks (bisa diedit kapan saja)</label>
+            <textarea id="obj-text" rows="3" style="width:100%; padding:10px 12px; border:3px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink); font-family:inherit; font-size:0.95rem;"></textarea>
+          </div>
+          <div class="field">
+            <label for="obj-size">Ukuran huruf</label>
+            <input type="range" id="obj-size" min="10" max="72" value="22" style="width:100%;" />
+          </div>
+          <div class="field">
+            <label for="obj-color">Warna huruf</label>
+            <input type="color" id="obj-color" value="#1C1B19" style="width:100%; height:44px; border:3px solid var(--line); border-radius:10px; padding:2px;" />
+          </div>
+          <div class="field" id="obj-tail-field" hidden>
+            <label for="obj-tail">Ekor balon</label>
+            <select id="obj-tail">
+              <option value="kiri">Kiri bawah</option>
+              <option value="kanan">Kanan bawah</option>
+              <option value="tanpa">Tanpa ekor</option>
+            </select>
+          </div>
+          <button id="obj-hapus" class="btn btn-secondary" type="button">🗑 Hapus objek ini</button>
         </div>
 
         <hr style="border:none; border-top:2px dashed var(--ink-soft); margin:18px 0;" />

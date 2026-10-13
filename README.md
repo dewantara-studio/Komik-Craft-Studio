@@ -190,12 +190,22 @@ bagian atas `latihan-canvas.js`.
 Komik Studio adalah editor gambar sederhana berbasis `<canvas>` HTML5
 (brush, eraser, teks, balon dialog) — bukan pengganti Clip Studio Paint,
 sesuai maksud awal. Untuk TAHAP 1 s.d. TAHAP 11 ini, hasil karya disimpan
-sebagai gambar PNG (base64) langsung di dokumen Firestore
+sebagai gambar JPEG (base64) langsung di dokumen Firestore
 (`users/{uid}/karya/{karyaId}`) supaya tidak perlu mengatur Firebase
 Storage dulu. Ini cukup untuk gambar-gambar sederhana, tapi kalau nanti
 karya makin besar/detail, sebaiknya pindahkan penyimpanan gambar ke
 **Firebase Storage** (upload file, simpan hanya `thumbnailUrl` di
 Firestore) supaya lebih hemat dan cepat.
+
+**Teks & Balon di Komik Studio** bukan "dicap" ke gambar, melainkan
+objek terpisah yang digambar di atas kanvas (lihat komentar di atas
+`assets/js/studio.js`). Karena itu setelah ditaruh, teks/balon masih
+bisa: digeser (seret), dilebarkan (kotak kuning kanan), ditinggikan
+(kotak kuning bawah), diubah keduanya sekaligus (kotak kuning sudut),
+diganti ukuran & warna hurufnya, diedit isinya (klik dua kali atau
+kotak di panel samping), dihapus (tombol 🗑 atau tombol Delete), serta
+ikut Undo/Redo. Goresan Brush/Eraser tersimpan di kanvas terpisah,
+jadi Eraser tidak ikut menghapus teks/balon.
 
 ## Cara menjalankan
 
